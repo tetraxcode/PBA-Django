@@ -1,0 +1,71 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+    <div style='margin-left:1%;'>
+        <h4>Student details</h4>
+        <p>First Name : {{result.First_Name}}</p>
+        <p>Last Name : {{result.Last_Name}}</p>
+        <p>Email : {{result.Email}}</p>
+        <p>User ID: {{result.User_ID}}</p>
+        <p>Role : {{result.Role}}</p>
+        <p>Total Score : {{result.Total_Score}}</p>
+        <p>Total Runs : {{result.Total_Runs}}</p>
+        <p>Total Develops : {{result.Total_Develops}}</p>
+        <p>Total Submits: {{result.Total_Submits}}</p>
+    </div>
+    {% for lab, arr in result.Labs.items %}
+    <br/>
+    <div style='margin-left:1%;'>
+        <h4>{{lab}} {{arr.submissions.0.caption.0}}</h4>
+        
+        <h6>Score Graph:</h6>
+        <div style="width:500px">
+            <canvas id="Score_Trail_Chart_{{lab}}"></canvas>
+        </div>
+        <script>
+            var myChart = new Chart(
+              document.getElementById('Score_Trail_Chart_{{lab}}'),
+              {
+                type: 'line',
+                data: {
+                    labels: {{arr.score_trail_label}},
+                    datasets: [{
+                        label: 'Score Trail',
+                        data: {{arr.score_trail_data}},
+                        fill: false,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+        <p>Score Trail: {{arr.incdev_score_trail}}</p>
+        <p>Loc Trail : {{arr.loc_trail}}</p>
+        <p>Time Trail: {{arr.time_trail}}</p>
+        <h6>Submissions:</h6>
+        <div class="accordion" style='width:70%;margin-left: 1%;' id="accordionExample">
+            {% for submission in arr.submissions %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading_{{submission.submission_id}}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc_{{submission.submission_id}}" aria-expanded="false" aria-controls="acc_{{submission.submission_id}}">
+                            Submission time: {{ submission.sub_time }}  Max Score = {{ submission.max_score }} {% if submission.suspicious == 'yes' %}   Suspicious {% endif %}
+                        </button>
+                    </h2>
+                    <div id="acc_{{submission.submission_id}}" class="accordion-collapse collapse" aria-labelledby="heading_{{submission.submission_id}}" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <pre><code>{{ submission.code }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+{% endblock %}

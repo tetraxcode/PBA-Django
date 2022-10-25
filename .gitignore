@@ -5,3 +5,12 @@ env
 db.sqlite3  
 /static  
 .DS_Store 
+
+media/*
+!media/.gitkeep
+
+tools/zytools/downloads/*
+!tools/zytools/downloads/.gitkeep
+
+tools/zytools/output/*
+!tools/zytools/output/.gitkeep

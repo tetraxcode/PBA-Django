@@ -33,6 +33,7 @@
     <!-- Highlight.js for syntax highlighting-->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <script src="//cdn.jsdelivr.net/gh/TRSasasusu/highlightjs-highlight-lines.js@1.1.5/highlightjs-highlight-lines.min.js"></script>
 
     <!-- Charts.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -68,7 +69,9 @@
         {% endblock %}
     </div>
 
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+        hljs.initHighlightingOnLoad();
+    </script>
 
 </body>
 

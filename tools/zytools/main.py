@@ -18,6 +18,8 @@ import csv
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+import asyncio
+
 ##############################
 #       Helper Functions     #
 ##############################
@@ -70,18 +72,42 @@ def download_code_helper(url):
             result = file.read()
         return (url, result)
 
+def get_or_create_eventloop():
+    try:
+        return asyncio.get_event_loop()
+    except RuntimeError as ex:
+        if "There is no current event loop in thread" in str(ex):
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            return asyncio.get_event_loop()
+
+def background(f):
+    def wrapped(*args, **kwargs):
+        return get_or_create_eventloop().run_in_executor(None, f, *args, **kwargs)
+    return wrapped
+
+@background
+def download(url, i, student_code):
+    r = requests.get(url)
+    student_code[i] = r.content
+
 def download_code(logfile):
     urls = logfile.zip_location.to_list()
-    threads = []
-    with ThreadPoolExecutor() as executor:
-        for url in urls:
-            threads.append(executor.submit(download_code_helper, url))
-        student_code = []
-        i = 0
-        for task in as_completed(threads):
-            # print(i)
-            student_code.append(task.result())
-            i += 1
+    student_code = ['' for i in range(len(urls))]
+    # threads = []
+    # with ThreadPoolExecutor() as executor:
+    #     for url in urls:
+    #         threads.append(executor.submit(download_code_helper, url))
+    #     student_code = []
+    #     i = 0
+    #     for task in as_completed(threads):
+    #         # print(i)
+    #         student_code.append(task.result())
+    #         i += 1
+    
+    for i,url in enumerate(urls):
+        download(url,i, student_code)
+
     df = pd.DataFrame(student_code, columns = ['zip_location', 'student_code'])
     logfile = pd.merge(left=logfile, right=df, on=['zip_location'])
     return logfile
@@ -298,7 +324,7 @@ if __name__ == '__main__':
         if len(final_roster) != 0:
             write_output_to_csv(final_roster)
 
-def main(id, selected_labs, selected_options, file_path, Styleanomaly):
+def main(id, selected_labs, selected_options, file_path, options):
     logfile = pd.read_csv(file_path)
     logfile = logfile[logfile.role == 'Student']
     urls = logfile.zip_location.to_list()
@@ -325,7 +351,7 @@ def main(id, selected_labs, selected_options, file_path, Styleanomaly):
             if data == {}:
                 logfile = download_code(logfile)
                 data = create_data_structure(logfile)
-            anomaly_detection_output = anomaly(data, selected_labs, Styleanomaly)
+            anomaly_detection_output = anomaly(data, selected_labs, options['Styleanomaly'])
             for user_id in anomaly_detection_output:
                 # print(anomaly_detection_output[user_id])
                 # break
@@ -409,7 +435,7 @@ def main(id, selected_labs, selected_options, file_path, Styleanomaly):
             if data == {}:
                 logfile = download_code(logfile)
                 data = create_data_structure(logfile)
-            return detailedview(id, logfile, data)
+            return detailedview(id, logfile, data, options)
 
         elif inp == 7:
             exit(0)

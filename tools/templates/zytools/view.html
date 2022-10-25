@@ -51,20 +51,34 @@
         <p>Time Trail: {{arr.time_trail}}</p>
         <h6>Submissions:</h6>
         <div class="accordion" style='width:70%;margin-left: 1%;' id="accordionExample">
-            {% for submission in arr.submissions %}
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading_{{submission.submission_id}}">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc_{{submission.submission_id}}" aria-expanded="false" aria-controls="acc_{{submission.submission_id}}">
-                            Submission time: {{ submission.sub_time }}  Max Score = {{ submission.max_score }} {% if submission.suspicious == 'yes' %}   Suspicious {% endif %}
-                        </button>
-                    </h2>
-                    <div id="acc_{{submission.submission_id}}" class="accordion-collapse collapse" aria-labelledby="heading_{{submission.submission_id}}" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <pre><code>{{ submission.code }}</code></pre>
+            <form action="" method='POST' enctype='multipart/form-data'>
+                {% csrf_token %}
+                <p>Please select two code files from below checkboxes and hit get differences</p><input type='submit' value='Get differences' name='Get differences'>
+                <br/><br/>
+                <pre><code>{{ arr.code_before }}</code></pre>
+                <pre><code>{{ arr.code_after }}</code></pre>
+                <pre><code>{{ arr.code_diff }}</code></pre>
+                <script>
+                    hljs.initHighlightLinesOnLoad([
+                        [{start: 2, end: 3, color: 'yellow'}],
+                    ]);
+                </script>
+                {% for submission in arr.submissions %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading_{{submission.submission_id}}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc_{{submission.submission_id}}" aria-expanded="false" aria-controls="acc_{{submission.submission_id}}">
+                                <input class="form-check-input" type="checkbox" name="checkbox_labs" id="inlineRadio1" value="{{lab}}_{{submission.submission_id}}" style="margin-right: 1%;">
+                                Submission time: {{ submission.sub_time }}  Max Score = {{ submission.max_score }} {% if submission.suspicious == 'yes' %}   Suspicious {% endif %}
+                            </button>
+                        </h2>
+                        <div id="acc_{{submission.submission_id}}" class="accordion-collapse collapse" aria-labelledby="heading_{{submission.submission_id}}">
+                            <div class="accordion-body">
+                                <pre><code>{{ submission.code }}</code></pre>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </form>
         </div>
     </div>
     {% endfor %}

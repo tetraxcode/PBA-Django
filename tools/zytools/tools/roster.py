@@ -164,7 +164,7 @@ def roster(dataframe, selected_labs):
                     'First Name': first_name,
                     'Email': email,
                     'Role': role,
-                    'PPM': None,
+                    'Points per minute': None,
                     'Time Spent(total)': time_spent_by_user,
                     'Total Runs': num_of_runs,
                     'Total Score': max_score,
@@ -177,7 +177,7 @@ def roster(dataframe, selected_labs):
                     'Feat: # Submits': 'x',
                     'Feat: Time spent': 'x',
                     'Feat: Suspicious': 'x',
-                    'Lab'+section+' PPM': ppm_normalized,
+                    'Lab'+section+' Points per minute': ppm_normalized,
                     'Lab'+section+' Time spent': time_spent_by_user,
                     'Lab'+section+' # of runs': num_of_runs,
                     'Lab'+section+' % score': max_score,
@@ -186,7 +186,7 @@ def roster(dataframe, selected_labs):
                     # 'Lab'+section+' User Code': code,
                 }
             else:   # Appending to the existing entries for that user. So we wont have to iterate through the whole user dataframe again
-                summary_roster[user_id]['Lab'+section+' PPM'] = ppm_normalized
+                summary_roster[user_id]['Lab'+section+' Points per minute'] = ppm_normalized
                 summary_roster[user_id]['Lab'+section+' Time spent'] = time_spent_by_user
                 summary_roster[user_id]['Lab'+section+' # of runs'] = num_of_runs
                 summary_roster[user_id]['Lab'+section+' % score'] = max_score
@@ -204,11 +204,11 @@ def roster(dataframe, selected_labs):
         count_of_labs = 0
         ppm_sum = 0
         for lab in selected_labs:
-            if 'Lab' + str(lab) + ' PPM' in summary_roster[user_id]:
+            if 'Lab' + str(lab) + ' Points per minute' in summary_roster[user_id]:
                 count_of_labs += 1
-                ppm_sum += summary_roster[user_id]['Lab' + str(lab) + ' PPM']
+                ppm_sum += summary_roster[user_id]['Lab' + str(lab) + ' Points per minute']
         avg_ppm = ppm_sum / count_of_labs
-        summary_roster[user_id]['PPM'] = round(avg_ppm, 2)
+        summary_roster[user_id]['Points per minute'] = round(avg_ppm, 2)
 
 
     return summary_roster

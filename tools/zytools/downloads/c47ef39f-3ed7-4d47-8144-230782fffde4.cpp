@@ -1,0 +1,16 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+   int baseChar;
+   int headChar;
+   
+   cin >> baseChar;
+   cin >> headChar;
+
+   /* Type your code here. */
+   cout << "     " <<headChar << endl;
+   cout <<baseChar <<baseChar << baseChar <<baseChar << baseChar << endl;
+
+   return 0;
+}

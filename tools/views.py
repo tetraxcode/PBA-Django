@@ -8,9 +8,9 @@ from tools.zytools.main import main as zytools_main
 # Create your views here.
 
 def home(request):
-    def modify_data(request, Styleanomaly):
+    def update_Styleanomaly(request, Styleanomaly):
         # data = Styleanomaly
-        print('hello')
+        # print('hello')
         # print(request)
         for anomaly in Styleanomaly:
             if anomaly+'_disabled' in request:
@@ -22,7 +22,7 @@ def home(request):
             else:
                 Styleanomaly[anomaly][0] = 0
             Styleanomaly[anomaly][1] = float(request.getlist(anomaly+'_score')[0])
-        print(Styleanomaly)
+        # print(Styleanomaly)
         return Styleanomaly
     # [Count_instances, Points/instance, anomaly on/off, regex, whether its used for once (used for !count instances)]
     Styleanomaly = {
@@ -43,7 +43,6 @@ def home(request):
 
     context = {'anomaly_options': Styleanomaly}
     file_path = ''
-
     if request.method == 'POST':
         selected_options = []
         # print(request.POST)
@@ -55,16 +54,16 @@ def home(request):
             if 'Roster' in selected_tools:
                 selected_options.append(2)
             if 'Anomalies' in selected_tools:
-                Styleanomaly = modify_data(request.POST, Styleanomaly)
+                Styleanomaly = update_Styleanomaly(request.POST, Styleanomaly)
                 selected_options.append(3)
             if 'Coding Trails' in selected_tools:
                 selected_options.append(4)
             if 'Style Anomalies' in selected_tools:
                 selected_options.append(5)
-            roster = zytools_main(0, selected_labs, selected_options, 'media/logfile.csv', Styleanomaly)
+            roster = zytools_main(0, selected_labs, selected_options, 'media/logfile.csv', {'Styleanomaly' : Styleanomaly})
             # print(roster)
             columns = []
-            summary = zytools_main(0, selected_labs, [1], 'media/logfile.csv', Styleanomaly)
+            summary = zytools_main(0, selected_labs, [1], 'media/logfile.csv', {'Styleanomaly' : Styleanomaly})
             for id in roster:
                 for column in roster[id]:
                     # print(summary_roster[id])
@@ -88,7 +87,7 @@ def home(request):
             selected_labs = [0]
 
             selected_options = [1]
-            summary = zytools_main(0, selected_labs, selected_options, file_path, Styleanomaly)
+            summary = zytools_main(0, selected_labs, selected_options, file_path, {'Styleanomaly' : Styleanomaly})
 
             context = {'entry':summary,
             'anomaly_options': Styleanomaly
@@ -102,7 +101,13 @@ def about(request):
 
 def view(request, userid):
     file_path = 'media/logfile.csv'
-    result = zytools_main(userid, [0], [6], file_path, {})
+    if request.method == "POST":
+        print(request.POST)
+        diff_code = [i for i in request.POST.getlist("checkbox_labs")]
+        result = zytools_main(userid, [0], [6], file_path, {'diff_code' : diff_code})
+        diff_code.clear()
+    else:
+        result = zytools_main(userid, [0], [6], file_path, {})
     context = {'userid': userid,
     'result' : result
     }

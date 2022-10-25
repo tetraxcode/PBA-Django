@@ -1,5 +1,9 @@
 from tools.zytools.tools.roster import roster
 from tools.zytools.tools import incdev
+from tools.zytools.tools.submission import Submission
+from difflib import Differ
+
+differ_inst = Differ()
 
 def get_label_data(input, option):
     if option == 'score_trail':
@@ -21,7 +25,7 @@ def get_label_data(input, option):
     return label, data, suspicious
 
 
-def detailedview(id, logfile, data):
+def detailedview(id, logfile, data, options):
     result = {}
     labs = logfile.content_section.unique()
     details = data[int(id)]
@@ -43,6 +47,35 @@ def detailedview(id, logfile, data):
     # loc_trail = incdev_data['loc_trail']
     # time_trail = incdev_data['time_trail']
 
+    # Finding differences between two code submissions 
+    if 'diff_code' in options:
+        element1 = options['diff_code'][0].split('_')
+        element2 = options['diff_code'][1].split('_')
+        lab1, submission_id_1 = float(element1[0]), element1[1]
+        lab2, submission_id_2 = float(element2[0]), element2[1]
+        for sub in details[lab1]:
+            if sub.submission_id == submission_id_1:
+                code1 = sub.code
+        for sub in details[lab2]:
+            if sub.submission_id == submission_id_2:
+                code2 = sub.code
+        deltas = list(differ_inst.compare(code1.splitlines(), code2.splitlines()))
+        # print(deltas)
+        code_diff = ''
+        for line in deltas:
+            # if line[0] == '+':
+            #     line = '<mark>' + line + '</mark>'
+            code_diff += line + '\n'
+        # print(code_diff)
+        if lab1 not in result['Labs']:
+            result['Labs'][lab1] = {}
+        result['Labs'][lab1]['code_diff'] = code_diff
+        result['Labs'][lab1]['code_before'] = code1
+        result['Labs'][lab1]['code_after'] = code2
+
+        # print(result['Labs'][lab1]['code_diff'])
+        
+ 
     for lab in labs:
         if lab in incdev_data:
             if lab not in result['Labs']:

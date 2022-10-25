@@ -1,0 +1,14 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+   int currentPrice;
+   int lastMonthsPrice;
+   
+   cin >> currentPrice;
+   cin >> lastMonthsPrice;
+
+   cout << "This house is $" << currentPrice << ". The change is $" << (currentPrice - lastMonthPrice) << " since last month. The estimated monthly mortgage is $" << (currentPrice * 0.045) << "." << endl;
+
+   return 0;
+}

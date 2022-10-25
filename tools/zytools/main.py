@@ -17,6 +17,8 @@ import os
 import csv
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from contextlib import closing
+import aiohttp
 
 import asyncio
 
@@ -72,42 +74,20 @@ def download_code_helper(url):
             result = file.read()
         return (url, result)
 
-def get_or_create_eventloop():
-    try:
-        return asyncio.get_event_loop()
-    except RuntimeError as ex:
-        if "There is no current event loop in thread" in str(ex):
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            return asyncio.get_event_loop()
-
-def background(f):
-    def wrapped(*args, **kwargs):
-        return get_or_create_eventloop().run_in_executor(None, f, *args, **kwargs)
-    return wrapped
-
-@background
-def download(url, i, student_code):
-    r = requests.get(url)
-    student_code[i] = r.content
-
 def download_code(logfile):
     urls = logfile.zip_location.to_list()
-    student_code = ['' for i in range(len(urls))]
-    # threads = []
-    # with ThreadPoolExecutor() as executor:
-    #     for url in urls:
-    #         threads.append(executor.submit(download_code_helper, url))
-    #     student_code = []
-    #     i = 0
-    #     for task in as_completed(threads):
-    #         # print(i)
-    #         student_code.append(task.result())
-    #         i += 1
-    
-    for i,url in enumerate(urls):
-        download(url,i, student_code)
-
+    # student_code = ['' for i in range(len(urls))]
+    student_code = []
+    threads = []
+    with ThreadPoolExecutor() as executor:
+        for url in urls:
+            threads.append(executor.submit(download_code_helper, url))
+        student_code = []
+        i = 0
+        for task in as_completed(threads):
+            # print(i)
+            student_code.append(task.result())
+            i += 1
     df = pd.DataFrame(student_code, columns = ['zip_location', 'student_code'])
     logfile = pd.merge(left=logfile, right=df, on=['zip_location'])
     return logfile

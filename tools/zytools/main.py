@@ -17,10 +17,8 @@ import os
 import csv
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from contextlib import closing
-import aiohttp
 
-import asyncio
+import time
 
 ##############################
 #       Helper Functions     #

@@ -24,12 +24,8 @@
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
-    <!-- Highlight.js for syntax highlighting-->
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-    
-
-
+    <!-- Prism.js -->
+    <link href="{% static 'css/prism.css' %}" rel="stylesheet" />
 
 </head>
 
@@ -57,7 +53,7 @@
     <br />
     <div id='home_body'>
         {% if user.is_authenticated %}
-        <h3>Welcome</h3>
+        <h3>Welcome {{ user.get_username }}</h3>
         <br />
         <div id='file_upload'>
             <form action="" method='POST' enctype='multipart/form-data'>
@@ -198,10 +194,14 @@
                     <label class="form-check-label" for="inlineRadio1">Coding style</label>
                 </div>
 
-                <input type="submit" name = 'Generate_Roster' value='Generate Roster'>
+                <input type="submit" name = 'Generate_Roster' value='Generate Roster' onclick="move()">
         </form>
         <br />
         <p>Bunch of options -- placeholder</p>
+        <div class="progress">
+            <div class="progress-bar" id="myBar" role="progressbar" style="width: 0%;"></div>
+        </div>
+
         <h3>Student Roster:</h3>
         <div style="overflow-x:auto">
             <table id= 'table_id' class='table table-responsive table-striped table-bordered'>
@@ -220,7 +220,7 @@
                         <td><a href="/view/{{id}}">view</a></td>
                         {% for col, val in value.items %}
                             {% if 'Student code' in col %}
-                            <td><pre><code>{{ val }}</code></pre></td>
+                            <td><pre class="line-numbers"><code class="language-cpp">{{ val }}</code></pre></td>
                             {% else %}
                             <td>{{ val }}</td>
                             {% endif %}
@@ -246,7 +246,29 @@
         });
         });
     </script>
-    <script>hljs.initHighlightingOnLoad();</script>
+
+    <script>
+        var i = 0;
+        function move() {
+        if (i == 0) {
+            i = 1;
+            var elem = document.getElementById("myBar");
+            var width = 1;
+            var id = setInterval(frame, 12);
+            function frame() {
+                if (width >= 100) {
+                    clearInterval(id);
+                    i = 0;
+                } else {
+                    width += 0.03;
+                    elem.style.width = width + "%";
+                }
+            }
+        }
+        }
+    </script>
+
+    <script src="{% static 'js/prism.js' %}"></script>
 
 </body>
 

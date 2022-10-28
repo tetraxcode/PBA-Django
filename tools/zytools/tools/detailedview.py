@@ -64,7 +64,7 @@ def detailedview(id, logfile, data, options):
         code_diff = ''
         for line in deltas:
             # if line[0] == '+':
-            #     line = '<mark>' + line + '</mark>'
+            #     line = '<mark>' + line + '</mark>' + '\n'
             code_diff += line + '\n'
         # print(code_diff)
         if lab1 not in result['Labs']:

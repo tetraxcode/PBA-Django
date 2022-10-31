@@ -1,37 +1,36 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-    <div style='margin-left:1%;'>
-        <h4>Student details</h4>
-        <p>First Name : {{result.First_Name}}</p>
-        <p>Last Name : {{result.Last_Name}}</p>
-        <p>Email : {{result.Email}}</p>
-        <p>User ID: {{result.User_ID}}</p>
-        <p>Role : {{result.Role}}</p>
-        <p>Total Score : {{result.Total_Score}}</p>
-        <p>Total Runs : {{result.Total_Runs}}</p>
-        <p>Total Develops : {{result.Total_Develops}}</p>
-        <p>Total Submits: {{result.Total_Submits}}</p>
+<div style='margin-left:1%;'>
+    <h4>Student details</h4>
+    <p>First Name : {{result.First_Name}}</p>
+    <p>Last Name : {{result.Last_Name}}</p>
+    <p>Email : {{result.Email}}</p>
+    <p>User ID: {{result.User_ID}}</p>
+    <p>Role : {{result.Role}}</p>
+    <p>Total Score : {{result.Total_Score}}</p>
+    <p>Total Runs : {{result.Total_Runs}}</p>
+    <p>Total Develops : {{result.Total_Develops}}</p>
+    <p>Total Submits: {{result.Total_Submits}}</p>
+</div>
+{% for lab, arr in result.Labs.items %}
+<br />
+<div style='margin-left:1%;'>
+    <h4>{{lab}} {{arr.submissions.0.caption.0}}</h4>
+
+    <h6>Score Graph:</h6>
+    <div style="width:500px">
+        <canvas id="Score_Trail_Chart_{{lab}}"></canvas>
     </div>
-    {% for lab, arr in result.Labs.items %}
-    <br/>
-    <div style='margin-left:1%;'>
-        <h4>{{lab}} {{arr.submissions.0.caption.0}}</h4>
-        
-        <h6>Score Graph:</h6>
-        <div style="width:500px">
-            <canvas id="Score_Trail_Chart_{{lab}}"></canvas>
-        </div>
-        <script>
-            var myChart = new Chart(
-              document.getElementById('Score_Trail_Chart_{{lab}}'),
-              {
+    <script>
+        var myChart = new Chart(
+            document.getElementById('Score_Trail_Chart_{{lab}}'), {
                 type: 'line',
                 data: {
-                    labels: {{arr.score_trail_label}},
+                    labels: {{ arr.score_trail_label }},
                     datasets: [{
                         label: 'Score Trail',
-                        data: {{arr.score_trail_data}},
+                        data: {{ arr.score_trail_data }},
                         fill: false,
                         borderColor: 'rgb(75, 192, 192)',
                         tension: 0.1
@@ -45,36 +44,57 @@
                     }
                 }
             });
-        </script>
-        <p>Score Trail: {{arr.incdev_score_trail}}</p>
-        <p>Loc Trail : {{arr.loc_trail}}</p>
-        <p>Time Trail: {{arr.time_trail}}</p>
-        <h6>Submissions:</h6>
-        <div class="accordion" style='width:70%;margin-left: 1%;' id="accordionExample">
-            <form action="" method='POST' enctype='multipart/form-data'>
-                {% csrf_token %}
-                <p>Please select two code files from below checkboxes and hit get differences</p><input type='submit' value='Get differences' name='Get differences'>
-                <br/><br/>
-                <pre class="line-numbers"><code class="language-cpp">{{ arr.code_before }}</code></pre>
-                <pre class="line-numbers"><code class="language-cpp">{{ arr.code_after }}</code></pre>
-                <pre class="line-numbers"><code class="language-diff-cpp diff-highlight">{{ arr.code_diff }}</code></pre>
-                {% for submission in arr.submissions %}
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="heading_{{submission.submission_id}}">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc_{{submission.submission_id}}" aria-expanded="false" aria-controls="acc_{{submission.submission_id}}">
-                                <input class="form-check-input" type="checkbox" name="checkbox_labs" id="inlineRadio1" value="{{lab}}_{{submission.submission_id}}" style="margin-right: 1%;">
-                                Submission time: {{ submission.sub_time }}  Max Score = {{ submission.max_score }} {% if submission.suspicious == 'yes' %}   Suspicious {% endif %}
-                            </button>
-                        </h2>
-                        <div id="acc_{{submission.submission_id}}" class="accordion-collapse collapse" aria-labelledby="heading_{{submission.submission_id}}">
-                            <div class="accordion-body">
+    </script>
+    <p>Score Trail: {{arr.incdev_score_trail}}</p>
+    <p>Loc Trail : {{arr.loc_trail}}</p>
+    <p>Time Trail: {{arr.time_trail}}</p>
+    <h6>Submissions:</h6>
+    <div class="accordion" style='width:70%;margin-left: 1%;' id="accordionExample">
+        <form action="" method='POST' enctype='multipart/form-data'>
+            {% csrf_token %}
+            <p>Please select two code files from below checkboxes and hit get differences</p><input type='submit'
+                value='Get differences' name='Get differences'>
+            <br /><br />
+            <!-- <pre class="line-numbers"><code class="language-cpp">{{ arr.code_before }}</code></pre>
+            <pre class="line-numbers"><code class="language-cpp">{{ arr.code_after }}</code></pre>
+            <pre class="line-numbers"><code class="language-diff-cpp diff-highlight">{{ arr.code_diff }}</code></pre> -->
+            {% for submission in arr.submissions %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_{{submission.submission_id}}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#acc_{{submission.submission_id}}" aria-expanded="false"
+                        aria-controls="acc_{{submission.submission_id}}">
+                        <input class="form-check-input" type="checkbox" name="checkbox_labs" id="inlineRadio1"
+                            value="{{lab}}_{{submission.submission_id}}" style="margin-right: 1%;">
+                        Submission time: {{ submission.sub_time }} Max Score = {{ submission.max_score }}
+                        {% if submission.suspicious == 'yes' %} Suspicious {% endif %}
+                    </button>
+                </h2>
+                <div id="acc_{{submission.submission_id}}" class="accordion-collapse collapse"
+                    aria-labelledby="heading_{{submission.submission_id}}">
+                    <div class="accordion-body">
+
+                        <nav>
+                            <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#actual_{{submission.submission_id}}" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Actual</button>
+                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#diff_{{submission.submission_id}}" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Difference</button>
+                            </div>
+                        </nav>
+                    
+                        <div class="tab-content p-3 border bg-light" id="nav-tabContent">
+                            <div class="tab-pane fade active show" id="actual_{{submission.submission_id}}" role="tabpanel" aria-labelledby="nav-home-tab">
                                 <pre class="line-numbers"><code class="language-cpp">{{ submission.code }}</code></pre>
                             </div>
+                            <div class="tab-pane fade" id="diff_{{submission.submission_id}}" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                <pre class="line-numbers"><code class="language-diff-cpp diff-highlight">{{ submission.code_diff }}</code></pre>
+                            </div>
                         </div>
+                        
                     </div>
+                </div>
                 {% endfor %}
-            </form>
-        </div>
+        </form>
     </div>
-    {% endfor %}
+</div>
+{% endfor %}
 {% endblock %}

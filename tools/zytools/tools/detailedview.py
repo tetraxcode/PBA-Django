@@ -24,6 +24,15 @@ def get_label_data(input, option):
             count += 1
     return label, data, suspicious
 
+def find_code_diff(code1, code2):
+    deltas = list(differ_inst.compare(code1.splitlines(), code2.splitlines()))
+    # print(deltas)
+    code_diff = ''
+    for line in deltas:
+        # if line[0] == '+':
+        #     line = '<mark>' + line + '</mark>' + '\n'
+        code_diff += line + '\n'
+    return code_diff
 
 def detailedview(id, logfile, data, options):
     result = {}
@@ -59,14 +68,15 @@ def detailedview(id, logfile, data, options):
         for sub in details[lab2]:
             if sub.submission_id == submission_id_2:
                 code2 = sub.code
-        deltas = list(differ_inst.compare(code1.splitlines(), code2.splitlines()))
+        # deltas = list(differ_inst.compare(code1.splitlines(), code2.splitlines()))
         # print(deltas)
-        code_diff = ''
-        for line in deltas:
+        # code_diff = ''
+        # for line in deltas:
             # if line[0] == '+':
             #     line = '<mark>' + line + '</mark>' + '\n'
-            code_diff += line + '\n'
+            # code_diff += line + '\n'
         # print(code_diff)
+        code_diff = find_code_diff(code1, code2)
         if lab1 not in result['Labs']:
             result['Labs'][lab1] = {}
         result['Labs'][lab1]['code_diff'] = code_diff
@@ -85,6 +95,14 @@ def detailedview(id, logfile, data, options):
             time_trail = incdev_data[lab]['time_trail']
             score_trail_label, score_trail_data, suspicious = get_label_data(incdev_score_trail, 'score_trail')
             result['Labs'][lab]['submissions'] = details[lab]
+            for i, submission in enumerate(result['Labs'][lab]['submissions']):
+                if i == 0:
+                    submission.code_diff = submission.code
+                else:
+                    code1 = result['Labs'][lab]['submissions'][i-1].code
+                    code2 = submission.code
+                    code_diff = find_code_diff(code1, code2)
+                    submission.code_diff = code_diff
             for i in range(len(suspicious)):
                 if suspicious[i] == 1:
                     result['Labs'][lab]['submissions'][i].suspicious = 'yes'

@@ -89,11 +89,13 @@ def home(request):
             selected_options = [1]
             summary = zytools_main(0, selected_labs, selected_options, file_path, {'Styleanomaly' : Styleanomaly})
 
-            context = {'entry':summary,
+            context = {'entry': summary[1],
+            'files_to_download': summary[0],
             'anomaly_options': Styleanomaly
             }
-    
 
+            # print(summary)
+    
     return render(request, 'zytools/home.html', context)
 
 def about(request):

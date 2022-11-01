@@ -174,6 +174,7 @@ if __name__ == '__main__':
     logfile = pd.read_csv(file_path)
     logfile = logfile[logfile.role == 'Student']
     urls = logfile.zip_location.to_list()
+    num_of_files_to_download = len(urls)
     selected_labs = get_selected_labs(logfile)
     data = {}
     final_roster = {}
@@ -306,6 +307,7 @@ def main(id, selected_labs, selected_options, file_path, options):
     logfile = pd.read_csv(file_path)
     logfile = logfile[logfile.role == 'Student']
     urls = logfile.zip_location.to_list()
+    num_of_files_to_download = len(urls)
     # selected_labs = get_selected_labs(logfile)
     # selected_labs = []
     # lab_ids = logfile.content_section.unique()
@@ -320,7 +322,7 @@ def main(id, selected_labs, selected_options, file_path, options):
     for inp in input_list:
 
         if inp == 1:
-            return quick_analysis(logfile)
+            return [num_of_files_to_download, quick_analysis(logfile)]
         
         elif inp == 2:
             final_roster = roster(logfile, selected_labs)
@@ -434,6 +436,7 @@ def main(id, selected_labs, selected_options, file_path, options):
             for col in columns:
                 if col not in final_roster[id]:
                     final_roster[id][col] = 'N/A'
+
     return final_roster
 
 def sayhello():

@@ -8,9 +8,9 @@
     <link rel='stylesheet' href="{% static 'css/main.css'%}">
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #E2E8EF;">
             <div class="container-fluid">
-                <a class="navbar-brand" href=""><img src="{% static 'images/ucr_logo_horizontal.png' %}" style='width: 150px'></a>
+                <a class="navbar-brand" href=""><img src="{% static 'images/ucr_logo_horizontal.png' %}" style='width: 120px;'></a>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
@@ -29,7 +29,13 @@
             </div>
         </nav>
         <br/>
-        <h1>Zytools about</h1>
-        
+        <div style="padding: 1%;">
+        <h3>Programming behaviour analysis</h3>
+            <p>
+                This IUSE project aims to serve the national interest by giving computer science instructors insight into how students create programs, or solutions to their coding assignments. Plagiarism in programming courses is a significant problem. When a student submits a solution to a programming assignment that has been copied from classmates or online sources, the student may earn a high grade on the assignment but is likely not to gain an understanding of the concepts being illustrated in the assignment. Currently, when a programming assignment is given in a class, an instructor only sees a student's final submission. This project will analyze programming log files to allow instructors to see the student's entire programming process, much like "showing your work" on a mathematics assignment. The project aims to prevent cheating, by creating simple approaches that let students know their programming activity is visible to instructors. As a result they will be less likely to cheat and will gain a better mastery of the concepts being illustrated in the assignment.
+
+    This project will develop various technologies. First, a "progression highlighter" will provide a concise view of every program run by a student. Second, a "coding trail" will provide a concise visual summary of a student's run. Third, an "anomaly detector" will detect coding styles that depart from the class' style. Fourth, a "drastic change detector" will detect unusual changes in code from one run to the next, suggestive of a student giving up and copy-pasting someone else's solution. Finally, an "overall concern" metric will take all the above items, plus similarity checker results, to provide an overall "concern" score to instructors. The efficacy of these technologies will be measured by analyzing the behavior of at least 100 students based on programming behavior from past quarters, that have been collected using a prototype of the tool. The NSF IUSE: EHR Program supports research and development projects to improve the effectiveness of STEM education for all students. Through the Engaged Student Learning track which is funding this project, the program supports the creation, exploration, and implementation of promising practices and tools.
+            </p>
+        </div>
     </body>
 </html>

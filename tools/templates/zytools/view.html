@@ -2,7 +2,7 @@
 
 {% block content %}
 <div style='margin-left:1%;'>
-    <h4>Student details</h4>
+    <h3 style="font-family: sans-serif;">Student details</h3>
     <p>First Name : {{result.First_Name}}</p>
     <p>Last Name : {{result.Last_Name}}</p>
     <p>Email : {{result.Email}}</p>
@@ -16,7 +16,7 @@
 {% for lab, arr in result.Labs.items %}
 <br />
 <div style='margin-left:1%;'>
-    <h4>{{lab}} {{arr.submissions.0.caption.0}}</h4>
+    <h3 style="font-family: sans-serif;">{{lab}} {{arr.submissions.0.caption.0}}</h3>
 
     <h6>Score Graph:</h6>
     <div style="width:500px">
@@ -55,9 +55,19 @@
             <p>Please select two code files from below checkboxes and hit get differences</p><input type='submit'
                 value='Get differences' name='Get differences'>
             <br /><br />
-            <!-- <pre class="line-numbers"><code class="language-cpp">{{ arr.code_before }}</code></pre>
-            <pre class="line-numbers"><code class="language-cpp">{{ arr.code_after }}</code></pre>
-            <pre class="line-numbers"><code class="language-diff-cpp diff-highlight">{{ arr.code_diff }}</code></pre> -->
+
+            <div style="width: 100%; display: flex;">
+                <div style="width: 33.33%;">
+                    <pre class="line-numbers"><code class="language-cpp">{{ arr.code_before }}</code></pre>
+                </div>
+                <div style="width: 33.33%; margin-left: 10px;">
+                    <pre class="line-numbers"><code class="language-cpp">{{ arr.code_after }}</code></pre>
+                </div>
+                <div style="width: 33.33%; margin-left: 10px;">
+                    <pre class="line-numbers"><code class="language-diff-cpp diff-highlight">{{ arr.code_diff }}</code></pre>
+                </div>
+            </div>
+
             {% for submission in arr.submissions %}
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading_{{submission.submission_id}}">

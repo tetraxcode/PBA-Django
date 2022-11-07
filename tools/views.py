@@ -73,7 +73,7 @@ def home(request):
             # print(roster)
             context = {'roster' : roster,
                         'columns': columns,
-                        'entry': summary,
+                        'entry': summary[1],
                         'anomaly_options': Styleanomaly
                         }
         else:

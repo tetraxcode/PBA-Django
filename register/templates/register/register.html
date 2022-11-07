@@ -34,9 +34,10 @@
                             <div class="px-5 ms-xl-4" style="padding-top: 1%">
                                 <a href="/"><img src="{% static 'images/ucr_logo_horizontal.png' %}" style="width: 200px"/></a>
                             </div>
-
+                            <br/>
+                            <br/>
                             <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                                <form method="post" style="width: 23rem">
+                                <form method="post" style="width: 23rem" onsubmit="return password_validation()">
                                     {% csrf_token %}
 
                                     <h3 style="font-family: sans-serif; font-weight: bold; padding: 1%;">
@@ -94,5 +95,29 @@
                 </div>
             </section>
         </div>
+
+        <script>
+            function password_validation() {
+                var password1 = document.getElementById("id_password1").value
+                var password2 = document.getElementById("id_password2").value
+                console.log(password1)
+                console.log(password2)
+                if(password1 != password2) {
+                    alert("Passwords don't match")
+                    return false
+                }
+                else if(password1.length < 8 || password2.length < 8) {
+                    alert("Password have to be at least 8 characters long")
+                    return false
+                }
+                else if(password1.match("'^[0-9]+$'")!= null || password2.match("'^[0-9]+$'") != null) {
+                    alert("Your password can't be entirely numeric")
+                    return false
+                }
+                else {
+                    return true
+                }
+            }
+        </script>
     </body>
 </html></body></html>

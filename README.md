@@ -14,4 +14,8 @@ Steps to run:
 3. Then run the command ```pip install -r requirements.txt```
 4. Once its done, run the command ```python manage.py migrate```
 5. Once migrations are done, run the command ```python manage.py runserver```
+<<<<<<< HEAD
 6. Navigate to ```http://localhost:8000```, register an account, login and have fun using the tool!!# PBA-Django
+=======
+6. Navigate to ```http://localhost:8000```, register an account, login and have fun using the tool!!
+>>>>>>> ce704b36a6fb6a2513542124d7ac994e9691acbe

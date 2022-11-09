@@ -21,7 +21,8 @@ class Submission:
         max_score,
         anomaly_dict=None,
         suspicious=None,
-        code_diff=None
+        code_diff=None,
+        code_mod=None
     ):
         self.student_id = student_id
         self.crid = crid

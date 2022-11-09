@@ -34,7 +34,6 @@ def find_code_diff(code1, code2):
         code_diff += line + '\n'
     return code_diff
 
-# def 
 
 def detailedview(id, logfile, data, options):
     result = {}

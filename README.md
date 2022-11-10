@@ -12,7 +12,7 @@ Steps to run:
    1. Navigate to the downloaded project folder and run the command ```python3 -m venv <name of environment>``` <br/>
       for example ```python3 -m venv env```
    2. You should see a folder env in your project directory, then run the command ```source env/bin/activate```
-3. Then run the command ```pip install -r requirements.txt``` (if you are experiencing error try running ```python -m pip cache purge``` before ```pip install -r requirements.txt```
+3. Then run the command ```pip install -r requirements.txt``` (if you are experiencing issues try running ```python -m pip cache purge``` before ```pip install -r requirements.txt```
 4. Once its done, run the command ```python manage.py migrate```
 5. Once migrations are done, run the command ```python manage.py runserver```
 6. Navigate to ```http://localhost:8000```, register an account, login and have fun using the tool!!# PBA-Django

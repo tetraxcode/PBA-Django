@@ -1,7 +1,7 @@
 {% extends "layouts/base.html" %}
 {% block content %}
 <div style='margin:1%;'>
-    <!-- <h1 style="color: #003DA5;">Programming Behaviour Analysis</h1> -->
+    <h1 style="color: #003DA5;">Programming Behaviour Analysis</h1>
     <h3 style="color: #003DA5;">Student details</h3>
     <div class="card">
         <div class="card-body">
@@ -30,7 +30,6 @@
             <div style="width:500px; margin: 1%;">
                 <canvas id="Lines_Trail_Chart_{{lab}}"></canvas>
             </div>
-            <p>Code run vs number of lines</p>
             <script>
                 var myChart = new Chart(
                     document.getElementById('Lines_Trail_Chart_{{lab}}'), {
@@ -47,8 +46,18 @@
                         },
                         options: {
                             scales: {
+                                x: {
+                                    title: {
+                                        display: "true",
+                                        text: "Code run"
+                                    }
+                                },
                                 y: {
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    title: {
+                                        display: true,
+                                        text: 'number of lines'
+                                    }
                                 }
                             }
                         }
@@ -65,18 +74,6 @@
                     <p>Please select two code files from below checkboxes and hit get differences</p><input class="custom_button" type='submit'
                         value='Get differences' name='Get differences' onclick="show_difference_block()">
                     <br /><br />
-
-                    <!-- <div style="width: 100%; display: flex;">
-                        <div style="width: 33.33%;">
-                             <pre class="line-numbers"><code class="language-cpp">{{ arr.code_before }}</code></pre>
-                        </div>
-                        <div style="width: 33.33%; margin-left: 10px;">
-                            <pre class="line-numbers"><code class="language-cpp">{{ arr.code_after }}</code></pre>
-                        </div> 
-                        <div style="width: 33.33%; margin-left: 10px;">
-                            <pre class="line-numbers"><code class="language-diff-cpp diff-highlight">{{ arr.code_diff }}</code></pre>
-                        </div>
-                    </div> -->
 
                     <div id="difference_block" style="width: 98%; height: 100%; padding-bottom: 10px; margin-left: 2%;">
                         <pre class="line-numbers"><code class="language-diff-cpp diff-highlight">{{ arr.code_diff }}</code></pre>

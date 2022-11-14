@@ -53,9 +53,6 @@ def detailedview(id, logfile, data, options):
     
     data_id = {int(id) : data[int(id)]}
     incdev_data = incdev.run(data_id)[int(id)]
-    # incdev_score_trail = incdev_data['incdev_score_trail']
-    # loc_trail = incdev_data['loc_trail']
-    # time_trail = incdev_data['time_trail']
 
     # Finding differences between two code submissions 
     if 'diff_code' in options:
@@ -69,14 +66,6 @@ def detailedview(id, logfile, data, options):
         for sub in details[lab2]:
             if sub.submission_id == submission_id_2:
                 code2 = sub.code
-        # deltas = list(differ_inst.compare(code1.splitlines(), code2.splitlines()))
-        # print(deltas)
-        # code_diff = ''
-        # for line in deltas:
-            # if line[0] == '+':
-            #     line = '<mark>' + line + '</mark>' + '\n'
-            # code_diff += line + '\n'
-        # print(code_diff)
         code_diff = find_code_diff(code1, code2)
         if lab1 not in result['Labs']:
             result['Labs'][lab1] = {}

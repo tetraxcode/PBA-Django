@@ -214,12 +214,12 @@
                     </div>
             </form>
         </div>
+        <br />
+        <div class="progress">
+            <div class="progress-bar" id="myBar" role="progressbar" style="width: 0%;"></div>
+        </div>
+        <br/>
         <div id="roster-div" style="display: none;">
-            <br />
-            <div class="progress">
-                <div class="progress-bar" id="myBar" role="progressbar" style="width: 0%;"></div>
-            </div>
-            <br/>
             <h3 style="color: #003DA5;">Student Roster:</h3>
             <div class="card">
                 <div class="card-body">
@@ -279,21 +279,21 @@
         // console.log(inc)
         var i = 0;
         function move() {
-        if (i == 0) {
-            i = 1;
-            var elem = document.getElementById("myBar");
-            var width = 1;
-            var id = setInterval(frame, 12);
-            function frame() {
-                if (width >= 100) {
-                    clearInterval(id);
-                    i = 0;
-                } else {
-                    width += inc;
-                    elem.style.width = width + "%";
+            if (i == 0) {
+                i = 1;
+                var elem = document.getElementById("myBar");
+                var width = 1;
+                var id = setInterval(frame, 12);
+                function frame() {
+                    if (width >= 100) {
+                        clearInterval(id);
+                        i = 0;
+                    } else {
+                        width += inc;
+                        elem.style.width = width + "%";
+                    }
                 }
             }
-        }
         }
     </script>
 

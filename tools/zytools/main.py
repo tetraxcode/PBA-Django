@@ -18,8 +18,6 @@ import csv
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-import time
-
 ##############################
 #       Helper Functions     #
 ##############################
@@ -50,7 +48,6 @@ def download_code_helper(url):
     file_name = url.split('/')[-1].strip('.zip')
     path = 'tools/zytools/downloads/' + file_name +'.cpp'
     if not os.path.isfile(path):
-        print('downloading')
         try:
             response = session.get(url)
             if response.status_code > 200 and response.status_code < 300:
@@ -59,7 +56,7 @@ def download_code_helper(url):
             filenames = zfile.namelist()
             content = zfile.open(filenames[0], 'r').read()
             result = content.decode('utf-8')
-            with open(path, 'w') as file:
+            with open(path, 'w', encoding="utf-8") as file:
                 file.write(result)
             return (url, result)
         except Not200Exception:
@@ -67,25 +64,22 @@ def download_code_helper(url):
         except ConnectionError:
             return (url, "Max retries met, cannot retrieve student code submission")
     else:
-        # print('not downloading')
         with open(path, 'r') as file:
             result = file.read()
         return (url, result)
 
 def download_code(logfile):
     urls = logfile.zip_location.to_list()
-    # student_code = ['' for i in range(len(urls))]
     student_code = []
     threads = []
+    print("Downloading student code...")
     with ThreadPoolExecutor() as executor:
         for url in urls:
             threads.append(executor.submit(download_code_helper, url))
         student_code = []
         i = 0
         for task in as_completed(threads):
-            # print(i)
             student_code.append(task.result())
-            i += 1
     df = pd.DataFrame(student_code, columns = ['zip_location', 'student_code'])
     logfile = pd.merge(left=logfile, right=df, on=['zip_location'])
     return logfile
@@ -308,14 +302,6 @@ def main(id, selected_labs, selected_options, file_path, options):
     logfile = logfile[logfile.role == 'Student']
     urls = logfile.zip_location.to_list()
     num_of_files_to_download = len(urls)
-    # selected_labs = get_selected_labs(logfile)
-    # selected_labs = []
-    # lab_ids = logfile.content_section.unique()
-    # labs_list = []
-    # for lab_id in lab_ids:
-    #     labs_list.append(lab_id)
-    # for lab in labs_list:
-    #         selected_labs.append(lab)
     data = {}
     final_roster = {}
     input_list = selected_options

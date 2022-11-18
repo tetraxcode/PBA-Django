@@ -7,11 +7,11 @@ from datetime import datetime
 import csv
 import io
 from urllib3 import Retry
-from tools.submission import Submission
+from tools.zytools.tools.submission import Submission
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 use_standalone = False
-cpplint_file = 'output/code.cpp'
+cpplint_file = 'tools/zytools/output/code.cpp'
 
 ##############################
 #       Helper Functions     #

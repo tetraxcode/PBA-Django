@@ -49,8 +49,11 @@ def home(request):
         if 'Generate_Roster' in request.POST:
             
             selected_labs = [float(i) for i in request.POST.getlist("checkbox_labs")]
+
+            
             
             selected_tools = request.POST.getlist("checkbox_options")
+            print(selected_tools)
             if 'Roster' in selected_tools:
                 selected_options.append(2)
             if 'Anomalies' in selected_tools:
@@ -70,6 +73,7 @@ def home(request):
                     if column not in columns:
                         columns.append(column) 
             # request.session['roster'] = roster
+            # print(roster)
             # print(roster)
             context = {'roster' : roster,
                         'columns': columns,

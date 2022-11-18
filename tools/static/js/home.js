@@ -46,3 +46,8 @@ function upload_form_validation() {
     return true
   }
 }
+
+function set_selected_file() {
+  const filename = document.getElementById("log_file_input").value.replace('C:\\fakepath\\', ' ')
+  document.getElementById("selected_file").innerText = "Selected file:" + filename
+}

@@ -73,7 +73,8 @@ def download_code(logfile):
     student_code = []
     threads = []
     print("Downloading student code...")
-    with ThreadPoolExecutor() as executor:
+    start = datetime.now()
+    with ThreadPoolExecutor(400) as executor:
         for url in urls:
             threads.append(executor.submit(download_code_helper, url))
         student_code = []
@@ -82,6 +83,8 @@ def download_code(logfile):
             student_code.append(task.result())
     df = pd.DataFrame(student_code, columns = ['zip_location', 'student_code'])
     logfile = pd.merge(left=logfile, right=df, on=['zip_location'])
+    end = datetime.now()
+    print(f"Downloaded {len(urls)} files in {end-start}")
     return logfile
 
 def get_selected_labs(logfile):

@@ -1,6 +1,7 @@
 from tools.zytools.tools.roster import roster
 from tools.zytools.tools import incdev
 from tools.zytools.tools.submission import Submission
+from tools.zytools.tools.similarity import similarity_of_one_student
 from difflib import Differ
 
 differ_inst = Differ()
@@ -108,5 +109,15 @@ def detailedview(id, logfile, data, options):
     # print(incdev_data)
     # print(roster_details)
     # print(result)
+
+    similarity = similarity_of_one_student(id, labs, data)
+    id = int(id)
+    for lab in similarity[id]:
+        if lab in result['Labs']:
+            # for sim in similarity[id][lab]['similarity']:
+                # if sim[0] != None and sim[1] != None:
+                #     sim.append(find_code_diff(sim[0].code, sim[1].code))
+            result['Labs'][lab]['similarity_max'] = similarity[id][lab]['similarity_max']
+            result['Labs'][lab]['similarity'] = similarity[id][lab]['similarity']
 
     return result

@@ -1,8 +1,6 @@
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 import os
-from datetime import datetime,timedelta
-from tools.zytools.main import sayhello
 from tools.zytools.main import main as zytools_main
 
 # Create your views here.
@@ -47,11 +45,7 @@ def home(request):
         selected_options = []
         # print(request.POST)
         if 'Generate_Roster' in request.POST:
-            
             selected_labs = [float(i) for i in request.POST.getlist("checkbox_labs")]
-
-            
-            
             selected_tools = request.POST.getlist("checkbox_options")
             print(selected_tools)
             if 'Roster' in selected_tools:
@@ -63,6 +57,8 @@ def home(request):
                 selected_options.append(4)
             if 'Style Anomalies' in selected_tools:
                 selected_options.append(5)
+            if 'Similarities' in selected_tools:
+                selected_options.append(7)
             roster = zytools_main(0, selected_labs, selected_options, 'media/logfile.csv', {'Styleanomaly' : Styleanomaly})
             # print(roster)
             columns = []
@@ -75,6 +71,8 @@ def home(request):
             # request.session['roster'] = roster
             # print(roster)
             # print(roster)
+            # print(selected_labs)
+            print(summary)
             context = {'roster' : roster,
                         'columns': columns,
                         'entry': summary[1],
@@ -119,7 +117,3 @@ def view(request, userid):
     }
     # print(result)
     return render(request, 'zytools/view.html', context)
-
-def test(request):
-    print(sayhello())
-    return render(request, 'zytools/test.html')

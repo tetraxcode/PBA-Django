@@ -9,6 +9,7 @@ from tools.zytools.tools.quickanalysis import quick_analysis
 from tools.zytools.tools.submission import Submission
 from tools.zytools.tools.stylechecker import stylechecker
 from tools.zytools.tools.detailedview import detailedview
+from tools.zytools.tools.similarity import similarity_of_highest_scoring_code_submissions
 import requests
 import zipfile
 import io
@@ -407,6 +408,26 @@ def main(id, selected_labs, selected_options, file_path, options):
             return detailedview(id, logfile, data, options)
 
         elif inp == 7:
+            if data == {}:
+                logfile = download_code(logfile)
+                data = create_data_structure(logfile)
+            
+            similarity = similarity_of_highest_scoring_code_submissions(id, selected_labs, data)
+            for user_id in similarity:
+                for lab_id in similarity[user_id]:
+                    if user_id in final_roster:
+                        final_roster[user_id][str(lab_id) + " Similarity"] = similarity[user_id][lab_id]['similarity_max']
+                    else:
+                        final_roster[user_id] = {
+                            'User ID': user_id,
+                            'Last Name': data[user_id][lab_id][0].last_name[0],
+                            'First Name': data[user_id][lab_id][0].first_name[0],
+                            'Email': data[user_id][lab_id][0].email[0],
+                            'Role': 'Student',
+                            str(lab_id) + " Similarity": similarity[user_id][lab_id]['similarity_max']
+                        }
+
+        elif inp == 8:
             exit(0)
         
         else:
@@ -427,8 +448,5 @@ def main(id, selected_labs, selected_options, file_path, options):
                     final_roster[id][col] = 'N/A'
 
     return final_roster
-
-def sayhello():
-    return "hello from say hello"
 
     

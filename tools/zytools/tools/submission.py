@@ -20,9 +20,7 @@ class Submission:
         submission,
         max_score,
         anomaly_dict=None,
-        suspicious=None,
-        code_diff=None,
-        code_mod=None
+        suspicious=None
     ):
         self.student_id = student_id
         self.crid = crid

@@ -1,34 +1,64 @@
-{% extends "layouts/base.html" %}
-{% block content %}
-<div style='margin:1%;'>
-    <h1 style="color: #003DA5;">Programming Behaviour Analysis</h1>
-    <h3 style="color: #003DA5;">Student details</h3>
+{% extends "layouts/base.html" %} {% block content %}
+<div style="margin: 1%">
+    <h1 style="color: #003da5">Programming Behaviour Analysis</h1>
+    <h3 style="color: #003da5">Student details</h3>
     <div class="card">
         <div class="card-body">
-            <p><strong>First Name :</strong> {{result.First_Name}}</p>
-            <p><strong>Last Name :</strong> {{result.Last_Name}}</p>
-            <p><strong>Email :</strong> {{result.Email}}</p>
-            <p><strong>User ID:</strong> {{result.User_ID}}</p>
-            <p><strong>Role :</strong> {{result.Role}}</p>
-            <p><strong>Totals across all labs:</strong></p>
-            <p><strong>Total Score :</strong> {{result.Total_Score}}</p>
-            <p><strong>Total Runs :</strong> {{result.Total_Runs}}</p>
-            <p><strong>Total Develops :</strong> {{result.Total_Develops}}</p>
-            <p><strong>Total Submits:</strong> {{result.Total_Submits}}</p>
+            <p>
+                <strong>First Name :</strong>
+                {{ result.First_Name }}
+            </p>
+            <p>
+                <strong>Last Name :</strong>
+                {{ result.Last_Name }}
+            </p>
+            <p>
+                <strong>Email :</strong>
+                {{ result.Email }}
+            </p>
+            <p>
+                <strong>User ID:</strong>
+                {{ result.User_ID }}
+            </p>
+            <p>
+                <strong>Role :</strong>
+                {{ result.Role }}
+            </p>
+            <p>
+                <strong>Totals across all labs:</strong>
+            </p>
+            <p>
+                <strong>Total Score :</strong>
+                {{ result.Total_Score }}
+            </p>
+            <p>
+                <strong>Total Runs :</strong>
+                {{ result.Total_Runs }}
+            </p>
+            <p>
+                <strong>Total Develops :</strong>
+                {{ result.Total_Develops }}
+            </p>
+            <p>
+                <strong>Total Submits:</strong>
+                {{ result.Total_Submits }}
+            </p>
         </div>
     </div>
 </div>
 
 <br />
-<div style='margin:1%;'>
+<div style="margin: 1%">
     {% for lab, arr in result.Labs.items %}
     <div class="card">
         <div class="card-body">
-            <h3 style="color: #003DA5;">{{lab}} {{arr.submissions.0.caption.0}}</h3>
+            <h3 style="color: #003da5">
+                {{ lab }} {{ arr.submissions.0.caption.0 }}
+            </h3>
 
             <h6>Lines Graph:</h6>
-            <div style="width:500px; margin: 1%;">
-                <canvas id="Lines_Trail_Chart_{{lab}}"></canvas>
+            <div style="width: 500px; margin: 1%">
+                <canvas id="Lines_Trail_Chart_{{ lab }}"></canvas>
             </div>
             <script>
                 var myChart = new Chart(
@@ -64,90 +94,161 @@
                     });
             </script>
             <br />
-            <p><strong data-bs-toggle="tooltip" title="Generates an IncDev trail for a particular student on a particular lab.
-                Trail consists of the line count for each run and the IncDev score after each run.
-                '^' characters denote drastic change. format: line count (score), line count 2 (score 2), ^line count 3 (score 3)
-                Example: 13 (1), 45 (.52), ^55 (.62)">Incremental Development Score Trail:</strong>
-                {{arr.incdev_score_trail}}</p>
-            <p><strong data-bs-toggle="tooltip" title="Trail consists of the line count for each run.
-                Less notable runs are replaced by a '.' character for brevity.
-                '^' characters denote drastic change, '*' characters denote IncDev violation.
-                Trail format: line count, line count 2, ^line count 3
-                Example: 13,25...^55">Lines of Code Trail :</strong> {{arr.loc_trail}}</p>
-            <p><strong data-bs-toggle="tooltip" title="Trail consists of the the number of minutes between submissions.
-                'Develop' runs are denoted by '-' characters.
-                Session breaks (>30 minutes since last run) are denoted by '/' characters.
-                Example: ---0,2,1 / 0,8,4">Time Trail:</strong> {{arr.time_trail}}</p>
-            <h6><strong data-bs-toggle="tooltip" title="List of difference develops and submit runs on Zybooks">Code
-                    Runs:</strong></h6>
-            <div class="accordion" style='width:70%;margin-left: 1%;' id="accordionExample">
-                <form action="" method='POST' enctype='multipart/form-data'>
+            <p>
+                <strong data-bs-toggle="tooltip" title="Generates an IncDev trail for a particular student on a particular lab.
+                                            Trail consists of the line count for each run and the IncDev score after each run.
+                                            '^' characters denote drastic change. format: line count (score), line count 2 (score 2), ^line count 3 (score 3)
+                                            Example: 13 (1), 45 (.52), ^55 (.62)">Incremental Development Score
+                    Trail:</strong>
+                {{ arr.incdev_score_trail }}
+            </p>
+            <p>
+                <strong data-bs-toggle="tooltip" title="Trail consists of the line count for each run.
+                                            Less notable runs are replaced by a '.' character for brevity.
+                                            '^' characters denote drastic change, '*' characters denote IncDev violation.
+                                            Trail format: line count, line count 2, ^line count 3
+                                            Example: 13,25...^55">Lines of Code Trail :</strong>
+                {{ arr.loc_trail }}
+            </p>
+            <p>
+                <strong data-bs-toggle="tooltip" title="Trail consists of the the number of minutes between submissions.
+                                            'Develop' runs are denoted by '-' characters.
+                                            Session breaks (>30 minutes since last run) are denoted by '/' characters.
+                                            Example: ---0,2,1 / 0,8,4">Time Trail:</strong>
+                {{ arr.time_trail }}
+            </p>
+            <h6>
+                <strong data-bs-toggle="tooltip"
+                    title="Checks for similarity between different students lab submisions">Similarities:</strong>
+                <p>Showing top 3 matches</p>
+                <div class="accordion" id="accordionSimilarity">
+                    {% for sim in arr.similarity|slice:":3"%}
+                        {% if sim.2 != 0.0 %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading_{{ sim.1.student_id }}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc_{{ sim.1.student_id }}" aria-expanded="false" aria-controls="acc_{{ sim.1.student_id }}">
+                                    Matched with: {{ sim.1.first_name.0 }}
+                                    <span class="badge rounded-pill text-outline" style="background-color: red; margin-left: 1%">{{ sim.2 }} Match</span>
+                                    </button>
+                                </h2>
+                            </div>
+                            <div id="acc_{{ sim.1.student_id }}" class="accordion-collapse collapse" aria-labelledby="#acc_{{ sim.1.student_id }}" data-bs-parent="heading_{{ sim.1.student_id }}">
+                                <div class="accordion-body">
+                                    <nav>
+                                        <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                                data-bs-target="#details_{{ sim.1.submission_id }}" type="button"
+                                                role="tab" aria-controls="nav-home" aria-selected="true">
+                                                Details
+                                            </button>
+                                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                                                data-bs-target="#code_{{ sim.1.submission_id }}" type="button"
+                                                role="tab" aria-controls="nav-profile" aria-selected="false">
+                                                Differences
+                                            </button>
+                                        </div>
+                                    </nav>
+
+                                    <div class="tab-content p-3 border bg-light" id="nav-tabContent">
+                                        <div class="tab-pane fade active show"
+                                            id="details_{{ sim.1.submission_id }}" role="tabpanel"
+                                            aria-labelledby="nav-home-tab">
+                                            <p><strong>Last name: </strong> {{ sim.1.last_name.0 }}</p>
+                                            <p><strong>First name: </strong> {{ sim.1.first_name.0 }}</p>
+                                            <p><strong>Email: </strong> {{ sim.1.email.0 }}</p>
+                                            <p><strong>Score: </strong> {{ sim.1.max_score }}</p>
+                                        </div>
+                                        <div class="tab-pane fade" id="code_{{ sim.1.submission_id }}"
+                                            role="tabpanel" aria-labelledby="nav-profile-tab">
+                                            {{ sim.3 | safe }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+            </h6>
+            <h6>
+                <strong data-bs-toggle="tooltip" title="List of difference develops and submit runs on Zybooks">Code
+                    Runs:</strong>
+            </h6>
+            <div class="accordion" style="width: 70%; margin-left: 1%" id="accordionExample">
+                <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <p>Please select two code files from below checkboxes and hit get differences</p><input
-                        class="custom_button" type='submit' value='Get differences' name='Get differences'
-                        onclick="show_difference_block()">
+                    <p>
+                        Please select two code files from below checkboxes and hit get
+                        differences
+                    </p>
+                    <input class="custom_button" type="submit" value="Get differences" name="Get differences"
+                        onclick="show_difference_block()" />
                     <br /><br />
 
-                    <div id="difference_block" style="width: 98%; height: 100%; padding-bottom: 10px; margin-left: 2%;">
+                    <div id="difference_block" style="
+              width: 98%;
+              height: 100%;
+              padding-bottom: 10px;
+              margin-left: 2%;
+            ">
                         <pre
                             class="line-numbers"><code class="language-diff-cpp diff-highlight">{{ arr.code_diff }}</code></pre>
                     </div>
 
                     {% for submission in arr.submissions %}
-                    <div style="display: flex;flex-direction: row">
-                        <div style="width: 2%; display: flex; align-items: center;">
+                    <div style="display: flex; flex-direction: row">
+                        <div style="width: 2%; display: flex; align-items: center">
                             <input class="form-check-input" type="checkbox" name="checkbox_labs" id="inlineRadio1"
-                                value="{{lab}}_{{submission.submission_id}}" style="margin-right: 1%;">
+                                value="{{ lab }}_{{ submission.submission_id }}" style="margin-right: 1%" />
                         </div>
-                        <div class="accordion-item" style="width: 98%; align-items: center;">
-                            <h2 class="accordion-header" id="heading_{{submission.submission_id}}">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#acc_{{submission.submission_id}}" aria-expanded="false"
-                                    aria-controls="acc_{{submission.submission_id}}">
-                                    {{ forloop.counter }} .
-                                    Submission time: {{ submission.sub_time }} Score = {{ submission.max_score }}
+                        <div class="accordion-item" style="width: 98%; align-items: center">
+                            <h2 class="accordion-header" id="heading_{{ submission.submission_id }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc_{{ submission.submission_id }}" aria-expanded="false" aria-controls="acc_{{ submission.submission_id }}">
+                                    {{ forloop.counter }} . Submission time: {{ submission.sub_time }} Score = {{ submission.max_score }} 
                                     {% if submission.suspicious == 'yes' %}
                                     <span class="badge rounded-pill text-outline"
-                                        style="background-color: red; margin-left: 1%;">Suspicious</span>
-                                    {% endif %}
+                                        style="background-color: red; margin-left: 1%">Suspicious</span>
+                                    {% endif %} 
                                     {% if submission.submission.0 == 1.0 %}
                                     <span class="badge rounded-pill text-outline"
-                                        style="background-color: rgb(0, 68, 255); margin-left: 1%;">Submit Run</span>
+                                        style="background-color: rgb(0, 68, 255); margin-left: 1%">Submit Run</span>
                                     {% else %}
                                     <span class="badge rounded-pill text-outline"
-                                        style="background-color: green; margin-left: 1%;">Develop Run</span>
+                                        style="background-color: green; margin-left: 1%">Develop Run</span>
                                     {% endif %}
                                 </button>
                             </h2>
-                            <div id="acc_{{submission.submission_id}}" class="accordion-collapse collapse"
-                                aria-labelledby="heading_{{submission.submission_id}}">
+                            <div id="acc_{{ submission.submission_id }}" class="accordion-collapse collapse"
+                                aria-labelledby="heading_{{ submission.submission_id }}">
                                 <div class="accordion-body">
-
                                     <nav>
                                         <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
                                             <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
-                                                data-bs-target="#actual_{{submission.submission_id}}" type="button"
-                                                role="tab" aria-controls="nav-home" aria-selected="true">Code</button>
+                                                data-bs-target="#actual_{{ submission.submission_id }}" type="button"
+                                                role="tab" aria-controls="nav-home" aria-selected="true">
+                                                Code
+                                            </button>
                                             <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
-                                                data-bs-target="#diff_{{submission.submission_id}}" type="button"
-                                                role="tab" aria-controls="nav-profile"
-                                                aria-selected="false">Changes</button>
+                                                data-bs-target="#diff_{{ submission.submission_id }}" type="button"
+                                                role="tab" aria-controls="nav-profile" aria-selected="false">
+                                                Changes
+                                            </button>
                                         </div>
                                     </nav>
 
                                     <div class="tab-content p-3 border bg-light" id="nav-tabContent">
-                                        <div class="tab-pane fade active show" id="actual_{{submission.submission_id}}"
-                                            role="tabpanel" aria-labelledby="nav-home-tab">
+                                        <div class="tab-pane fade active show"
+                                            id="actual_{{ submission.submission_id }}" role="tabpanel"
+                                            aria-labelledby="nav-home-tab">
                                             <pre class="language-cpp line-numbers"
                                                 data-line="1-2,4"><code>{{ submission.code }}</code></pre>
                                         </div>
-                                        <div class="tab-pane fade" id="diff_{{submission.submission_id}}"
+                                        <div class="tab-pane fade" id="diff_{{ submission.submission_id }}"
                                             role="tabpanel" aria-labelledby="nav-profile-tab">
                                             <pre
                                                 class="line-numbers"><code class="language-diff-cpp diff-highlight">{{ submission.code_diff }}</code></pre>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -161,11 +262,13 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipTriggerList = [].slice.call(
+                document.querySelectorAll('[data-bs-toggle="tooltip"]')
+            );
             var tooltipList = tooltipTriggerList.map(function (element) {
                 return new bootstrap.Tooltip(element);
             });
         });
     </script>
-    {% endfor %}
-    {% endblock %}
+    {% endfor %} {% endblock %}
+</div>

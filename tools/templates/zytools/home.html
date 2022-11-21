@@ -2,383 +2,347 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>Home</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <head>
+        <title>Home</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <!-- CSS -->
-    <link rel='stylesheet' href="{% static 'css/main.css'%}">
+        <!-- CSS -->
+        <link
+        rel='stylesheet' href="{% static 'css/main.css' %}">
 
-    <!-- Javascript -->
-    <script src="{% static 'js/home.js' %}"></script>
+        <!-- Javascript -->
+        <script src="{% static 'js/home.js' %}"></script>
 
-    <!-- Bootstrap JS-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+        <!-- Bootstrap JS-->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-    <!-- DataTables -->
-    <script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+        <!-- DataTables -->
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+        <link
+        rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
 
-    <!-- Prism.js -->
-    <link href="{% static 'css/prism.css' %}" rel="stylesheet" />
+        <!-- Prism.js -->
+        <link href="{% static 'css/prism.css' %}" rel="stylesheet"/>
 
-</head>
+    </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top"
-        style="background-color: white; box-shadow: 0px 6px 2px -6px rgba(0,0,0,.5);">
-        <div class="container-fluid">
-            <a class="navbar-brand" href=""><img src="{% static 'images/ucr_logo_horizontal.png' %}"
-                    style='width: 120px;'></a>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/about">about</a>
-                    </li>
-                    <li class='nav-item'>
-                        <a class='nav-link active' href='/logout'>logout</a>
-                    </li>
-                </ul>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: white; box-shadow: 0px 6px 2px -6px rgba(0,0,0,.5);">
+            <div class="container-fluid">
+                <a class="navbar-brand" href=""><img src="{% static 'images/ucr_logo_horizontal.png' %}" style='width: 120px;'></a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/">Home</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/about">about</a>
+                        </li>
+                        <li class='nav-item'>
+                            <a class='nav-link active' href='/logout'>logout</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-    <br />
-    <div id='home_body' style="padding: 1%">
-        <h1 style="color: #003DA5;">Programming Behaviour Analysis</h1>
-        {% if user.is_authenticated %}
-        <h4 style="font-family: sans-serif; color: #82B3DC;">Welcome {{ user.get_username }}</h4>
-        <br />
-        <div class="card">
-            <div id='file_upload' class="card-body">
-                <h5 class="card-title">Select a Zybooks log file to upload</h5>
-                <form action="" method='POST' enctype='multipart/form-data' onsubmit="return upload_form_validation()">
-                    {% csrf_token %}
-                    <!-- <span style="color: red;">Choose a Zybooks log file to upload</span> -->
-                    <br />
-                    <div id="upload-box">
-                        <p>Drag your file here or click in this area.</p>
-                        <input type="file" id="log_file_input" name="log_file" accept=".csv"
-                            onchange="set_selected_file()">
-                    </div>
-                    <p id="selected_file" style="margin-top: 130px;">None</p>
-                    <br />
-                    <input id="upload-button" type="submit" value='upload' onclick="show_lab_averages()">
-                </form>
-            </div>
-        </div>
-        <br />
-        <br />
-        <div id="lab_averages" style="display: none;">
-            <h3 style="color: #003DA5;">Lab Summary Table</h3>
-
-            <form action="" method='POST' enctype='multipart/form-data'>
+        </nav>
+        <br/>
+        <div id='home_body' style="padding: 1%">
+            <h1 style="color: #003DA5;">Programming Behaviour Analysis</h1>
+            {% if user.is_authenticated %}
+                <h4 style="font-family: sans-serif; color: #82B3DC;">Welcome
+                    {{ user.get_username }}</h4>
+                <br/>
                 <div class="card">
-                    {% csrf_token %}
-                    <div class="card-body" id='lab_summary_table'>
-                        <table class="table table-striped table-bordered">
-                            <thead class="table-custom">
-                                <tr>
-                                    <h5 class="card-title">Student Averages by Lab</h5>
-                                </tr>
-                                <tr>
-                                    <th scope="col" data-bs-toggle="tooltip" title="Select the labs you want to analyze"><p>select all</p><input class="form-check-input" type="checkbox" onclick="toggle_all_labs(this)" checked></th>
-                                    <th scope="col" data-bs-toggle="tooltip" title="Lab title and the number of students in that lab">Lab</th>
-                                    <th scope="col" data-bs-toggle="tooltip" title="Average time spent by students">Time spent (sec)</th>
-                                    <th scope="col" data-bs-toggle="tooltip" title="Average number of total runs by students including both develop and submit runs"># Runs</th>
-                                    <th scope="col" data-bs-toggle="tooltip" title="Average score by students">Score (%)</th>
-                                    <th scope="col" data-bs-toggle="tooltip" title="Average number of develop runs by students"># Develops</th>
-                                    <th scope="col" data-bs-toggle="tooltip" title="Average number of submit runs by students"># Submits</th>
-                                    <th scope="col" data-bs-toggle="tooltip" title="Number of pivots to a completely different code"># Pivots</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for lab,value in entry.items %}
-                                <tr style="text-align: center;">
-                                    <th><input class="form-check-input" type="checkbox" name="checkbox_labs_1"
-                                            id="inlineRadio1" value={{value.section}} checked></th>
-                                    <th scope="row" style="text-align: left;">Lab {{value.section}} ({{value.name}}) [{{value.number_of_students}}
-                                        students]
-                                    </th>
-                                    <td>{{value.time_spent}}</td>
-                                    <td>{{value.num_of_runs}}</td>
-                                    <td>{{value.score}}</td>
-                                    <td>{{value.develops}}</td>
-                                    <td>{{value.num_of_submits}}</td>
-                                    <td>x</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <div id='file_upload' class="card-body">
+                        <h5 class="card-title">Select a Zybooks log file to upload</h5>
+                        <form action="" method='POST' enctype='multipart/form-data' onsubmit="return upload_form_validation()">
+                            {% csrf_token %}
+                            <!-- <span style="color: red;">Choose a Zybooks log file to upload</span> -->
+                            <br/>
+                            <div id="upload-box">
+                                <p>Drag your file here or click in this area.</p>
+                                <input type="file" id="log_file_input" name="log_file" accept=".csv" onchange="set_selected_file()">
+                            </div>
+                            <p id="selected_file" style="margin-top: 130px;">None</p>
+                            <br/>
+                            <input id="upload-button" type="submit" value='upload' onclick="show_lab_averages()">
+                        </form>
                     </div>
                 </div>
-                <br />
-                <br />
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Select Lab Analysis options below</h5>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="checkbox_options" id="inlineRadio1"
-                                value="Roster" checked>
-                            <label class="form-check-label" for="inlineRadio1" data-bs-toggle="tooltip"
-                                title="Displays basic statistics like total time spent, total number of develop runs, submit runs, etc per each student and each lab">Basic
-                                stats</label>
-                        </div>
+                <br/>
+                <br/>
+                <div id="lab_averages" style="display: none;">
+                    <h3 style="color: #003DA5;">Lab Summary Table</h3>
 
-                        <div class="form-check form-check-inline" data-bs-toggle="tooltip"
-                            title="Click the dropdown below to check for various anomalies. For Example, If an advanced topic like pointers have not yet been taught in class but the student had used them in their code, which indiciates they might have copied the code from the internet">
-                            <input class="form-check-input" type="checkbox" name="checkbox_options" id="inlineRadio1"
-                                value="Anomalies">
-                            <div class="dropdown">
-                                <button class="btn btn-md dropdown-toggle" type="button" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <label class="form-check-label" for="inlineRadio1">Anomalies</label>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                    style="height: 400px; overflow: auto; padding:0%">
-                                    <table class="table table-striped table-bordered">
-                                        <thead class="table-custom">
-                                            <tr>
-                                                <th data-bs-toggle="tooltip"
-                                                    title="Enable or disable this anomaly check, Press Y to enable and N to disable">
-                                                    Enable / Disable</th>
-                                                <th data-bs-toggle="tooltip"
-                                                    title="Count score per each use of this anomaly. For example if this check is enabled if a student uses pointers twice, then the score for this anomaly violation is counted twice. If disabled it only counts the anomaly once no matter how many times the student uses it. Press Y to enable and N to disable">
-                                                    Count Instances</th>
-                                                <th data-bs-toggle="tooltip" title="Score for each instance which will be added to the overall anomaly score. You can also enter a custom score here">Points / Instance</th>
-                                                <th data-bs-toggle="tooltip" title="Anomaly: Something that deviates from normal or expected. Below are several checks that determines if students code is not normal">Anomaly</th>
+                    <form action="" method='POST' enctype='multipart/form-data'>
+                        <div class="card">
+                            {% csrf_token %}
+                            <div class="card-body" id='lab_summary_table'>
+                                <table class="table table-striped table-bordered">
+                                    <thead class="table-custom">
+                                        <tr>
+                                            <h5 class="card-title">Student Averages by Lab</h5>
+                                        </tr>
+                                        <tr>
+                                            <!-- <th scope="col" data-bs-toggle="tooltip" title="Select the labs you want to analyze"> -->
+                                                <!-- <p>select all</p><input class="form-check-input" type="checkbox" onclick="toggle_all_labs(this)" checked></th> -->
+                                            <th scope="col" data-bs-toggle="tooltip" title="Lab title and the number of students in that lab">Lab</th>
+                                            <th scope="col" data-bs-toggle="tooltip" title="Average time spent by students">Time spent (sec)</th>
+                                            <th scope="col" data-bs-toggle="tooltip" title="Average number of total runs by students including both develop and submit runs"># Runs</th>
+                                            <th scope="col" data-bs-toggle="tooltip" title="Average score by students">Score (%)</th>
+                                            <th scope="col" data-bs-toggle="tooltip" title="Average number of develop runs by students"># Develops</th>
+                                            <th scope="col" data-bs-toggle="tooltip" title="Average number of submit runs by students"># Submits</th>
+                                            <th scope="col" data-bs-toggle="tooltip" title="Number of pivots to a completely different code"># Pivots</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for lab,value in entry.items %}
+                                            <tr style="text-align: center;">
+                                                <th><input class="form-check-input" type="checkbox" name="checkbox_labs" id="inlineRadio1" value= {{ value.section }} checked></th>
+                                                <th scope="row" style="text-align: left;">Lab
+                                                    {{ value.section }}
+                                                    ({{ value.name }}) [{{ value.number_of_students }}
+                                                    students]
+                                                </th>
+                                                <td>{{ value.time_spent }}</td>
+                                                <td>{{ value.num_of_runs }}</td>
+                                                <td>{{ value.score }}</td>
+                                                <td>{{ value.develops }}</td>
+                                                <td>{{ value.num_of_submits }}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for anomaly, value in anomaly_options.items %}
-                                            <tr>
-                                                <td>
-                                                    {% if value.2 == 1 %}
-                                                    <div class="btn-group btn-group-toggle btn-group-sm"
-                                                        data-toggle="buttons">
-                                                        <label class="btn btn-outline-primary active">
-                                                            <input type="radio" class="btn-check"
-                                                                name="{{anomaly}}_enabled"
-                                                                id="{{option.type}}_count_true" value="true"
-                                                                autocomplete="off" checked>Y
-                                                        </label>
-                                                        <label class="btn btn-outline-primary">
-                                                            <input type="radio" class="btn-check"
-                                                                name="{{anomaly}}_disabled"
-                                                                id="{{option.type}}_count_false" value="false"
-                                                                autocomplete="off">N
-                                                        </label>
-                                                    </div>
-                                                    {% else %}
-                                                    <div class="btn-group btn-group-toggle btn-group-sm"
-                                                        data-toggle="buttons">
-                                                        <label class="btn btn-outline-primary active">
-                                                            <input type="radio" class="btn-check"
-                                                                name="{{anomaly}}_enabled"
-                                                                id="{{option.type}}_count_true" value="true"
-                                                                autocomplete="off">Y
-                                                        </label>
-                                                        <label class="btn btn-outline-primary">
-                                                            <input type="radio" class="btn-check"
-                                                                name="{{anomaly}}_disabled"
-                                                                id="{{option.type}}_count_false" value="false"
-                                                                autocomplete="off" checked>N
-                                                        </label>
-                                                    </div>
-                                                    {% endif %}
-                                                </td>
-                                                <td>
-                                                    {% if value.0 == 1 %}
-                                                    <!-- <input class="form-check-input" type="checkbox" name="anomaly_pointers" id="anomaly_count_instances" value=1 checked> -->
-                                                    <div class="btn-group btn-group-toggle btn-group-sm"
-                                                        data-toggle="buttons">
-                                                        <label class="btn btn-outline-primary active">
-                                                            <input type="radio" class="btn-check"
-                                                                name="{{anomaly}}_count_true"
-                                                                id="{{option.type}}_count_true" value="true"
-                                                                autocomplete="off" checked>Y
-                                                        </label>
-                                                        <label class="btn btn-outline-primary">
-                                                            <input type="radio" class="btn-check"
-                                                                name="{{anomaly}}_count_false"
-                                                                id="{{option.type}}_count_false" value="false"
-                                                                autocomplete="off">N
-                                                        </label>
-                                                    </div>
-                                                    {% else %}
-                                                    <div class="btn-group btn-group-toggle btn-group-sm"
-                                                        data-toggle="buttons">
-                                                        <label class="btn btn-outline-primary active">
-                                                            <input type="radio" class="btn-check"
-                                                                name="{{anomaly}}_count_true"
-                                                                id="{{option.type}}_count_true" value="true"
-                                                                autocomplete="off">Y
-                                                        </label>
-                                                        <label class="btn btn-outline-primary">
-                                                            <input type="radio" class="btn-check"
-                                                                name="{{anomaly}}_count_false"
-                                                                id="{{option.type}}_count_false" value="false"
-                                                                autocomplete="off" checked>N
-                                                        </label>
-                                                    </div>
-                                                    {% endif %}
-                                                </td>
-                                                <td>
-                                                    <input class="form-control form-control-sm" type="text"
-                                                        name="{{anomaly}}_score" id="pointers_pts" value={{value.1}}>
-                                                </td>
-                                                <td>
-                                                    <p>{{anomaly}}</p>
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="checkbox_options" id="inlineRadio1"
-                                value="Coding Trails">
-                            <label class="form-check-label" for="inlineRadio1" data-bs-toggle="tooltip"
-                                title="Contains various trails across student code runs">Coding Trails</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" name="checkbox_options" id="inlineRadio1"
-                                value="Style Anomalies">
-                            <label class="form-check-label" for="inlineRadio1" data-bs-toggle="tooltip"
-                                title="Checks for violation of googles cpp style guidelines on their latest code submission">Coding
-                                style</label>
-                        </div>
-                        <input type="submit" id="Generate_Roster" name='Generate_Roster' value='Generate'
-                            onclick="move(); show_roster()">
-                    </div>
-                </div>
-            </form>
-        </div>
-        <br />
-        <div class="progress">
-            <div class="progress-bar" id="myBar" role="progressbar" style="width: 0%;"></div>
-        </div>
-        <br />
-        <div id="roster-div" style="display: none;">
-            <h3 style="color: #003DA5;">Student Roster:</h3>
-            <div class="card">
-                <div class="card-body">
-                    <div style="overflow-x:auto" style="padding: 1%">
-                        <table id='table_id' class='table table-responsive table-striped table-bordered'>
-                            <thead class='table-custom'>
-                                <tr>
-                                    <th scope='col'>Details</th>
-                                    {% for column in columns %}
-                                    <th scope='col'>{{column}}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for id, value in roster.items %}
+                        <br/>
+                        <br/>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Select Lab Analysis options below</h5>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="checkbox_options" id="inlineRadio1" value="Roster" checked>
+                                    <label class="form-check-label" for="inlineRadio1" data-bs-toggle="tooltip" title="Displays basic statistics like total time spent, total number of develop runs, submit runs, etc per each student and each lab">Basic
+                                                                        stats</label>
+                                </div>
 
-                                <tr>
-                                    <td><a href="/view/{{id}}">view</a></td>
-                                    {% for col, val in value.items %}
-                                    {% if 'Student code' in col %}
-                                    <td>
-                                        <pre class="line-numbers"><code class="language-cpp">{{ val }}</code></pre>
-                                    </td>
-                                    {% else %}
-                                    <td>{{ val }}</td>
-                                    {% endif %}
-                                    {% endfor %}
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                <div class="form-check form-check-inline" data-bs-toggle="tooltip" title="Click the dropdown below to check for various anomalies. For Example, If an advanced topic like pointers have not yet been taught in class but the student had used them in their code, which indiciates they might have copied the code from the internet">
+                                    <input class="form-check-input" type="checkbox" name="checkbox_options" id="inlineRadio1" value="Anomalies">
+                                    <div class="dropdown">
+                                        <button class="btn btn-md dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <label class="form-check-label" for="inlineRadio1">Anomalies</label>
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="height: 400px; overflow: auto; padding:0%">
+                                            <table class="table table-striped table-bordered">
+                                                <thead class="table-custom">
+                                                    <tr>
+                                                        <th data-bs-toggle="tooltip" title="Enable or disable this anomaly check, Press Y to enable and N to disable">
+                                                            Enable / Disable</th>
+                                                        <th data-bs-toggle="tooltip" title="Count score per each use of this anomaly. For example if this check is enabled if a student uses pointers twice, then the score for this anomaly violation is counted twice. If disabled it only counts the anomaly once no matter how many times the student uses it. Press Y to enable and N to disable">
+                                                            Count Instances</th>
+                                                        <th data-bs-toggle="tooltip" title="Score for each instance which will be added to the overall anomaly score. You can also enter a custom score here">Points / Instance</th>
+                                                        <th data-bs-toggle="tooltip" title="Anomaly: Something that deviates from normal or expected. Below are several checks that determines if students code is not normal">Anomaly</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for anomaly, value in anomaly_options.items %}
+                                                        <tr>
+                                                            <td>
+                                                                {% if value.2 == 1 %}
+                                                                    <div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+                                                                        <label class="btn btn-outline-primary active">
+                                                                            <input type="radio" class="btn-check" name="{{ anomaly }}_enabled" id="{{ option.type }}_count_true" value="true" autocomplete="off" checked>Y
+                                                                        </label>
+                                                                        <label class="btn btn-outline-primary">
+                                                                            <input type="radio" class="btn-check" name="{{ anomaly }}_disabled" id="{{ option.type }}_count_false" value="false" autocomplete="off">N
+                                                                        </label>
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+                                                                        <label class="btn btn-outline-primary active">
+                                                                            <input type="radio" class="btn-check" name="{{ anomaly }}_enabled" id="{{ option.type }}_count_true" value="true" autocomplete="off">Y
+                                                                        </label>
+                                                                        <label class="btn btn-outline-primary">
+                                                                            <input type="radio" class="btn-check" name="{{ anomaly }}_disabled" id="{{ option.type }}_count_false" value="false" autocomplete="off" checked>N
+                                                                        </label>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                {% if value.0 == 1 %}
+                                                                    <!-- <input class="form-check-input" type="checkbox" name="anomaly_pointers" id="anomaly_count_instances" value=1 checked> -->
+                                                                    <div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+                                                                        <label class="btn btn-outline-primary active">
+                                                                            <input type="radio" class="btn-check" name="{{ anomaly }}_count_true" id="{{ option.type }}_count_true" value="true" autocomplete="off" checked>Y
+                                                                        </label>
+                                                                        <label class="btn btn-outline-primary">
+                                                                            <input type="radio" class="btn-check" name="{{ anomaly }}_count_false" id="{{ option.type }}_count_false" value="false" autocomplete="off">N
+                                                                        </label>
+                                                                    </div>
+                                                                {% else %}
+                                                                    <div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+                                                                        <label class="btn btn-outline-primary active">
+                                                                            <input type="radio" class="btn-check" name="{{ anomaly }}_count_true" id="{{ option.type }}_count_true" value="true" autocomplete="off">Y
+                                                                        </label>
+                                                                        <label class="btn btn-outline-primary">
+                                                                            <input type="radio" class="btn-check" name="{{ anomaly }}_count_false" id="{{ option.type }}_count_false" value="false" autocomplete="off" checked>N
+                                                                        </label>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                <input class="form-control form-control-sm" type="text" name="{{ anomaly }}_score" id="pointers_pts" value={{ value.1 }}>
+                                                            </td>
+                                                            <td>
+                                                                <p>{{ anomaly }}</p>
+                                                            </td>
+                                                        </tr>
+                                                    {% endfor %}
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="checkbox_options" id="inlineRadio1" value="Coding Trails">
+                                    <label class="form-check-label" for="inlineRadio1" data-bs-toggle="tooltip" title="Contains various trails across student code runs">Coding Trails</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="checkbox_options" id="inlineRadio1" value="Style Anomalies">
+                                    <label class="form-check-label" for="inlineRadio1" data-bs-toggle="tooltip" title="Checks for violation of googles cpp style guidelines on their latest code submission">Coding
+                                                                        style</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="checkbox_options" id="inlineRadio1" value="Similarities">
+                                    <label class="form-check-label" for="inlineRadio1" data-bs-toggle="tooltip" title="Checks for code Similarities between highest scoring code submissions">Similarities</label>
+                                </div>
+                                <input type="submit" id="Generate_Roster" name='Generate_Roster' value='Generate' onclick="move(); show_roster()">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <br/>
+                <div class="progress">
+                    <div class="progress-bar" id="myBar" role="progressbar" style="width: 0%;"></div>
+                </div>
+                <br/>
+                <div id="roster-div" style="display: none;">
+                    <h3 style="color: #003DA5;">Student Roster:</h3>
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="overflow-x:auto" style="padding: 1%">
+                                <table id='table_id' class='table table-responsive table-striped table-bordered'>
+                                    <thead class='table-custom'>
+                                        <tr>
+                                            <th scope='col'>Details</th>
+                                            {% for column in columns %}
+                                                <th scope='col'>{{ column }}</th>
+                                            {% endfor %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for id, value in roster.items %}
+
+                                            <tr>
+                                                <td>
+                                                    <a href="/view/{{ id }}">view</a>
+                                                </td>
+                                                {% for col, val in value.items %}
+                                                    {% if 'Student code' in col %}
+                                                        <td>
+                                                            <pre class="line-numbers"><code class="language-cpp">{{ val }}</code></pre>
+                                                        </td>
+                                                    {% else %}
+                                                        <td>{{ val }}</td>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    {% else %}
-    <h4>Please login to continue using this application</h4>
-    <p>Login <a href='/login'>here</a></p>
-    {% endif %}
+        {% else %}
+            <h4>Please login to continue using this application</h4>
+            <p>Login
+                <a href='/login'>here</a>
+            </p>
+        {% endif %}
 
-    <script>
-        $(document).ready(function () {
-            $('#table_id').DataTable({
-                lengthMenu: [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, 'All'],
-                ],
-                iDisplayLength: -1
+        <script>
+            $(document).ready(function () {
+                $('#table_id').DataTable({
+                    lengthMenu: [
+                        [
+                            10, 25, 50, -1
+                        ],
+                        [
+                            10, 25, 50, 'All'
+                        ],
+                    ],
+                    iDisplayLength: -1
+                });
             });
-        });
-    </script>
+        </script>
 
-    <script>
-        // console.log({{ files_to_download }})
-        files = {{ files_to_download }}
-        // console.log(files)
-        inc = (100 / files)
-        // console.log(inc)
-        var i = 0;
-        function move() {
-            if (i == 0) {
-                i = 1;
-                var elem = document.getElementById("myBar");
-                var width = 1;
-                var id = setInterval(frame, 12);
-                function frame() {
-                    if (width >= 100) {
-                        clearInterval(id);
-                        i = 0;
-                    } else {
-                        width += inc;
-                        elem.style.width = width + "%";
+        <script>
+            // console.log({{ files_to_download }})
+            files = {{ files_to_download }}
+            // console.log(files)
+            inc = (100 / files)
+            // console.log(inc)
+            var i = 0;
+            function move() {
+                if (i == 0) {
+                    i = 1;
+                    var elem = document.getElementById("myBar");
+                    var width = 1;
+                    var id = setInterval(frame, 12);
+                    function frame() {
+                        if (width >= 100) {
+                            clearInterval(id);
+                            i = 0;
+                        } else {
+                            width += inc;
+                            elem.style.width = width + "%";
+                        }
                     }
                 }
             }
-        }
-    </script>
+        </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            var tooltipList = tooltipTriggerList.map(function (element) {
-                return new bootstrap.Tooltip(element);
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+                var tooltipList = tooltipTriggerList.map(function (element) {
+                    return new bootstrap.Tooltip(element);
+                });
             });
-        });
-    </script>
+        </script>
 
-    <script>
-        function toggle_all_labs(source) {
-            checkboxes = document.getElementsByName('checkbox_labs_1');
-            for(var i=0, n=checkboxes.length;i<n;i++) {
-                checkboxes[i].checked = source.checked;
+        <script>
+            function toggle_all_labs(source) {
+                checkboxes = document.getElementsByName('checkbox_labs');
+                for (var i = 0, n = checkboxes.length; i < n; i++) {
+                    checkboxes[i].checked = source.checked;
+                }
             }
-        }
-    </script>
+        </script>
 
-    <script src="{% static 'js/prism.js' %}"></script>
+        <script src="{% static 'js/prism.js' %}"></script>
 
-</body>
+    </body>
 
 </html>

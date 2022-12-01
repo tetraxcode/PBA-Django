@@ -188,41 +188,6 @@ def similarity_of_highest_scoring_code_submissions(student_id, selected_labs, da
                 similarity_max = max(similarity_max, simMax)
                 result[user_id_1][lab]["similarity"].append([submission1, submission2, simMax])
         result[user_id_1][lab]["similarity_max"] = similarity_max
-
-    # for lab in selected_labs:
-    #     student_code_2 = ""
-    #     for id in data:
-    #         if id not in result:
-    #             result[id] = {}
-    #         if lab not in result:
-    #             result[id][lab] = {"similarity": []}
-
-    #         if id == student_id:
-    #             max_score = 0
-    #             for submission in data[id][lab]:
-    #                 if submission.max_score >= max_score:
-    #                     student_code_1 = submission.code
-    #         else:
-    #             max_score = 0
-    #             for submission in data[id][lab]:
-    #                 if submission.max_score >= max_score:
-    #                     student_code_2 = submission.code
-
-    #         aCodeLOC = getLOC(student_code_1)
-    #         bCodeLOC = getLOC(student_code_2)
-
-    #         aCodeNC = removeNoise(student_code_1) # remove emtpy lines and comments
-    #         bCodeNC = removeNoise(student_code_2) # remove emtpy lines and comments
-
-    #         aCodeNC_LOC = getLOC(aCodeNC)
-    #         bCodeNC_LOC = getLOC(bCodeNC)
-
-    #         # Calculating sim 
-    #         sim = getMySim(student_code_1, student_code_2)
-    #         simNC = getMySim(aCodeNC, bCodeNC)
-    #         simMax = max(sim, simNC)
-    #         result[id][lab]["similarity"].append(simMax)
-    # print(result)
     return result
 
 def similarity_of_one_student(student_id, selected_labs, data):

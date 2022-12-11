@@ -5,6 +5,17 @@ from pygments.token import Token as ParseToken
 import difflib
 from bs4 import BeautifulSoup
 
+def getMoss(code1, code2):
+
+    # fp1 = copydetect.CodeFingerprint( (code1), 10, 1) old value before using negative progressions
+    # fp2 = copydetect.CodeFingerprint( (code2), 10, 1)
+
+    fp1 = copydetect.CodeFingerprint( (code1), 25, 1)
+    fp2 = copydetect.CodeFingerprint( (code2), 25, 1)
+    token_overlap, similarities, slices = copydetect.compare_files(fp1, fp2)
+
+    return round(similarities[0],1), round(similarities[1],1)
+#*************************************************************    
 def get_similarities(code1, code2):
     fp1 = copydetect.CodeFingerprint( (code1), 25, 1)
     fp2 = copydetect.CodeFingerprint( (code2), 25, 1)
@@ -182,8 +193,8 @@ def similarity_of_highest_scoring_code_submissions(student_id, selected_labs, da
                 bCodeNC = removeNoise(student_code_2) # remove emtpy lines and comments
 
                 # Calculating sim 
-                sim = getMySim(student_code_1, student_code_2)
-                simNC = getMySim(aCodeNC, bCodeNC)
+                sim, table_html = getMySim(student_code_1, student_code_2)
+                simNC, table_html_NC = getMySim(aCodeNC, bCodeNC)
                 simMax = max(sim, simNC)
                 similarity_max = max(similarity_max, simMax)
                 result[user_id_1][lab]["similarity"].append([submission1, submission2, simMax])

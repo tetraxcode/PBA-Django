@@ -1,0 +1,8 @@
+version: '3.9.15-slim-bullseye'
+
+services:
+  django: 
+    image: pba-tools:0.0.1
+    build: .
+    ports: 
+      - "8000:8000"

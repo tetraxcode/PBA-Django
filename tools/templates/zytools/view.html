@@ -1,4 +1,6 @@
 {% extends "layouts/base.html" %} {% block content %}
+{% load mathfilters %}
+
 <div style="margin: 1%">
     <h1 style="color: #003da5">Programming Behaviour Analysis</h1>
     <h3 style="color: #003da5">Student details</h3>
@@ -128,7 +130,7 @@
                                 <h2 class="accordion-header" id="heading_{{ sim.1.student_id }}">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc_{{ sim.1.student_id }}" aria-expanded="false" aria-controls="acc_{{ sim.1.student_id }}">
                                     Matched with: {{ sim.1.first_name.0 }}
-                                    <span class="badge rounded-pill text-outline" style="background-color: red; margin-left: 1%">{{ sim.2 }} Match</span>
+                                    <span class="badge rounded-pill text-outline" style="background-color: red; margin-left: 1%">{{ sim.2|mul:100 }}% Match</span>
                                     </button>
                                 </h2>
                             </div>

@@ -7,14 +7,35 @@ from bs4 import BeautifulSoup
 
 def getMoss(code1, code2):
 
-    # fp1 = copydetect.CodeFingerprint( (code1), 10, 1) old value before using negative progressions
-    # fp2 = copydetect.CodeFingerprint( (code2), 10, 1)
-
     fp1 = copydetect.CodeFingerprint( (code1), 25, 1)
     fp2 = copydetect.CodeFingerprint( (code2), 25, 1)
     token_overlap, similarities, slices = copydetect.compare_files(fp1, fp2)
-
-    return round(similarities[0],1), round(similarities[1],1)
+    test_sim = similarities[1]
+    ref_sim = similarities[0]
+    slices_test = slices[1]
+    slices_ref = slices[0]
+    # print(test_sim, ref_sim, slices_test, slices_ref, token_overlap)
+    detector = copydetect.CopyDetector
+    soup = BeautifulSoup(detector.generate_html_report(fp1, fp2, test_sim, ref_sim, slices_test, slices_ref, token_overlap), 'html.parser')
+    # print(soup.prettify())
+    code = soup.find_all('div', class_='col')
+    # print(code[2])
+    # print(code[3])
+    html = f'''
+    <table>
+        <tr>
+            <td>
+                {code[2]}
+            </td>
+            <td>
+                {code[3]}
+            </td>
+        </tr>
+    </table>
+    '''
+    # print(soup)
+    test_sim *= 100
+    return test_sim, html
 #*************************************************************    
 def get_similarities(code1, code2):
     fp1 = copydetect.CodeFingerprint( (code1), 25, 1)
@@ -255,8 +276,10 @@ def similarity_of_one_student(student_id, selected_labs, data):
                 bCodeNC = removeNoise(student_code_2) # remove emtpy lines and comments
 
                 # Calculating sim 
-                sim, table_html = getMySim(student_code_1, student_code_2)
-                simNC, table_html_NC = getMySim(aCodeNC, bCodeNC)
+                # sim, table_html = getMySim(student_code_1, student_code_2)
+                # simNC, table_html_NC = getMySim(aCodeNC, bCodeNC)
+                sim, table_html = getMoss(student_code_1, student_code_2)
+                simNC, table_html_NC = getMoss(aCodeNC, bCodeNC)
                 simMax = max(sim, simNC)
                 similarity_max = max(similarity_max, simMax)
                 result[user_id_1][lab]["similarity"].append([submission1, submission2, simMax, str(table_html)])

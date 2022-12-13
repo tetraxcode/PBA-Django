@@ -73,8 +73,6 @@ def detailedview(id, logfile, data, options):
         result['Labs'][lab1]['code_diff'] = code_diff
         result['Labs'][lab1]['code_before'] = code1
         result['Labs'][lab1]['code_after'] = code2
-
-        # print(result['Labs'][lab1]['code_diff'])
         
  
     for lab in labs:

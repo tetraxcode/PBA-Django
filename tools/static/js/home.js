@@ -51,3 +51,12 @@ function set_selected_file() {
   const filename = document.getElementById("log_file_input").value.replace('C:\\fakepath\\', ' ')
   document.getElementById("selected_file").innerText = "Selected file:" + filename
 }
+
+function show_circle_loader() {
+  console.log("hello")
+  document.getElementById("circle_loader").style.visibility = "visible";
+}
+
+// function show_difference_block() {
+//   document.getElementById("difference_block").style.visibility = "visible";
+// }

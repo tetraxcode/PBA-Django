@@ -123,54 +123,63 @@
                 <strong data-bs-toggle="tooltip"
                     title="Checks for similarity between different students lab submisions">Similarities:</strong>
                 <p>Showing top 3 matches</p>
-                <div class="accordion" id="accordionSimilarity">
-                    {% for sim in arr.similarity|slice:":3"%}
-                        {% if sim.2 != 0.0 %}
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="heading_{{ sim.1.student_id }}">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc_{{ sim.1.student_id }}" aria-expanded="false" aria-controls="acc_{{ sim.1.student_id }}">
-                                    Matched with: {{ sim.1.first_name.0 }}
-                                    <span class="badge rounded-pill text-outline" style="background-color: red; margin-left: 1%">{{ sim.2|mul:100 }}% Match</span>
-                                    </button>
-                                </h2>
-                            </div>
-                            <div id="acc_{{ sim.1.student_id }}" class="accordion-collapse collapse" aria-labelledby="#acc_{{ sim.1.student_id }}" data-bs-parent="heading_{{ sim.1.student_id }}">
-                                <div class="accordion-body">
-                                    <nav>
-                                        <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-                                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
-                                                data-bs-target="#details_{{ sim.1.submission_id }}" type="button"
-                                                role="tab" aria-controls="nav-home" aria-selected="true">
-                                                Details
-                                            </button>
-                                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
-                                                data-bs-target="#code_{{ sim.1.submission_id }}" type="button"
-                                                role="tab" aria-controls="nav-profile" aria-selected="false">
-                                                Differences
-                                            </button>
-                                        </div>
-                                    </nav>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input class="custom_button" type="submit" value="get similarities" name="get similarities" onclick="show_circle_loader()" /> <div class="loader" id="circle_loader" style="visibility: hidden;"></div>
+                    <br/>
 
-                                    <div class="tab-content p-3 border bg-light" id="nav-tabContent">
-                                        <div class="tab-pane fade active show"
-                                            id="details_{{ sim.1.submission_id }}" role="tabpanel"
-                                            aria-labelledby="nav-home-tab">
-                                            <p><strong>Last name: </strong> {{ sim.1.last_name.0 }}</p>
-                                            <p><strong>First name: </strong> {{ sim.1.first_name.0 }}</p>
-                                            <p><strong>Email: </strong> {{ sim.1.email.0 }}</p>
-                                            <p><strong>Score: </strong> {{ sim.1.max_score }}</p>
-                                        </div>
-                                        <div class="tab-pane fade" id="code_{{ sim.1.submission_id }}"
-                                            role="tabpanel" aria-labelledby="nav-profile-tab">
-                                            {{ sim.3 | safe }}
-                                        </div>
+                    <div class="accordion" id="accordionSimilarity">
+                        {% for sim in arr.similarity|slice:":3"%}
+                        {% if sim.2 != 0.0 %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading_{{ sim.1.student_id }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#acc_{{ sim.1.student_id }}" aria-expanded="false"
+                                    aria-controls="acc_{{ sim.1.student_id }}">
+                                    Matched with: {{ sim.1.first_name.0 }}
+                                    <span class="badge rounded-pill text-outline"
+                                        style="background-color: red; margin-left: 1%">{{ sim.2 }}% Match</span>
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="acc_{{ sim.1.student_id }}" class="accordion-collapse collapse"
+                            aria-labelledby="#acc_{{ sim.1.student_id }}"
+                            data-bs-parent="heading_{{ sim.1.student_id }}">
+                            <div class="accordion-body">
+                                <nav>
+                                    <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
+                                            data-bs-target="#details_{{ sim.1.submission_id }}" type="button" role="tab"
+                                            aria-controls="nav-home" aria-selected="true">
+                                            Details
+                                        </button>
+                                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
+                                            data-bs-target="#code_{{ sim.1.submission_id }}" type="button" role="tab"
+                                            aria-controls="nav-profile" aria-selected="false">
+                                            Differences
+                                        </button>
+                                    </div>
+                                </nav>
+
+                                <div class="tab-content p-3 border bg-light" id="nav-tabContent">
+                                    <div class="tab-pane fade active show" id="details_{{ sim.1.submission_id }}"
+                                        role="tabpanel" aria-labelledby="nav-home-tab">
+                                        <p><strong>Last name: </strong> {{ sim.1.last_name.0 }}</p>
+                                        <p><strong>First name: </strong> {{ sim.1.first_name.0 }}</p>
+                                        <p><strong>Email: </strong> {{ sim.1.email.0 }}</p>
+                                        <p><strong>Score: </strong> {{ sim.1.max_score }}</p>
+                                    </div>
+                                    <div class="tab-pane fade" id="code_{{ sim.1.submission_id }}" role="tabpanel"
+                                        aria-labelledby="nav-profile-tab">
+                                        {{ sim.3 | safe }}
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         {% endif %}
-                    {% endfor %}
-                </div>
-                
+                        {% endfor %}
+                    </div>
+                </form>
             </h6>
             <h6>
                 <strong data-bs-toggle="tooltip" title="List of difference develops and submit runs on Zybooks">Code
@@ -205,12 +214,14 @@
                         </div>
                         <div class="accordion-item" style="width: 98%; align-items: center">
                             <h2 class="accordion-header" id="heading_{{ submission.submission_id }}">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#acc_{{ submission.submission_id }}" aria-expanded="false" aria-controls="acc_{{ submission.submission_id }}">
-                                    {{ forloop.counter }} . Submission time: {{ submission.sub_time }} Score = {{ submission.max_score }} 
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#acc_{{ submission.submission_id }}" aria-expanded="false"
+                                    aria-controls="acc_{{ submission.submission_id }}">
+                                    {{ forloop.counter }} . Submission time: {{ submission.sub_time }} Score = {{submission.max_score }}
                                     {% if submission.suspicious == 'yes' %}
                                     <span class="badge rounded-pill text-outline"
                                         style="background-color: red; margin-left: 1%">Suspicious</span>
-                                    {% endif %} 
+                                    {% endif %}
                                     {% if submission.submission.0 == 1.0 %}
                                     <span class="badge rounded-pill text-outline"
                                         style="background-color: rgb(0, 68, 255); margin-left: 1%">Submit Run</span>

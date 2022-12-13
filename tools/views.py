@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.core.files.storage import FileSystemStorage
 import os
+
+from markupsafe import re
 from tools.zytools.main import main as zytools_main
 
 # Create your views here.
@@ -105,15 +107,20 @@ def about(request):
 
 def view(request, userid):
     file_path = 'media/logfile.csv'
+    options = {}
     if request.method == "POST":
         print(request.POST)
-        diff_code = [i for i in request.POST.getlist("checkbox_labs")]
-        result = zytools_main(userid, [0], [6], file_path, {'diff_code' : diff_code})
+        diff_code = []
+        if "Get differences" in request.POST:
+            diff_code = [i for i in request.POST.getlist("checkbox_labs")]
+            options['diff_code'] = diff_code
+        if 'get similarities' in request.POST:
+            options['get similarities'] = ''
+        result = zytools_main(userid, [0], [6], file_path, options)
         diff_code.clear()
     else:
         result = zytools_main(userid, [0], [6], file_path, {})
     context = {'userid': userid,
     'result' : result
     }
-    # print(result)
     return render(request, 'zytools/view.html', context)

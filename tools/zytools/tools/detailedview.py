@@ -73,8 +73,7 @@ def detailedview(id, logfile, data, options):
         result['Labs'][lab1]['code_diff'] = code_diff
         result['Labs'][lab1]['code_before'] = code1
         result['Labs'][lab1]['code_after'] = code2
-        
- 
+
     for lab in labs:
         if lab in incdev_data:
             if lab not in result['Labs']:
@@ -101,18 +100,12 @@ def detailedview(id, logfile, data, options):
             result['Labs'][lab]['loc_trail'] = loc_trail
             result['Labs'][lab]['time_trail'] = time_trail
     
-    
-    
-    # print(incdev_score_trail, loc_trail, time_trail)
-    # print(incdev_data)
-    # print(roster_details)
-    # print(result)
-
-    similarity = similarity_of_one_student(id, labs, data)
-    id = int(id)
-    for lab in similarity[id]:
-        if lab in result['Labs']:
-            result['Labs'][lab]['similarity_max'] = similarity[id][lab]['similarity_max']
-            result['Labs'][lab]['similarity'] = similarity[id][lab]['similarity']
+    if 'get similarities' in options:
+        similarity = similarity_of_one_student(id, labs, data)
+        id = int(id)
+        for lab in similarity[id]:
+            if lab in result['Labs']:
+                result['Labs'][lab]['similarity_max'] = similarity[id][lab]['similarity_max']
+                result['Labs'][lab]['similarity'] = similarity[id][lab]['similarity']
 
     return result

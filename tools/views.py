@@ -5,6 +5,8 @@ import os
 from markupsafe import re
 from tools.zytools.main import main as zytools_main
 
+import pandas as pd
+
 # Create your views here.
 
 def home(request):
@@ -89,6 +91,16 @@ def home(request):
             fs.save('logfile.csv', f)
             file_path = 'media/logfile.csv'
             selected_labs = [0]
+
+            #Checking if the uploaded logfile contains all the required headers
+            headers = pd.read_csv('media/logfile.csv', index_col=0, nrows=0).columns.tolist()
+            # print(headers)
+            # user_id, content_section, content_resource_id, caption, first_name, last_name, email, zip_location,
+            # submission, score, date_submitted
+            required_headers = ["user_id", "content_section", "content_resource_id", "caption", "first_name", "last_name", "email", "zip_location", "submission", "score", "date_submitted"]
+            if not all(item in headers for item in required_headers):
+                return render(request, 'zytools/home.html', {"message": "missing headers", "required_headers": f"Required headers: {required_headers}", "headers": f"Headers in the uploaded file: {headers}"})
+            
 
             selected_options = [1]
             summary = zytools_main(0, selected_labs, selected_options, file_path, {'Styleanomaly' : Styleanomaly})

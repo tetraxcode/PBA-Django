@@ -62,6 +62,9 @@
                 <div class="card">
                     <div id='file_upload' class="card-body">
                         <h5 class="card-title">Select a Zybooks log file to upload</h5>
+                        <p style="color: red;">{{ message }}</p>
+                        <p style="color: red;">{{ required_headers }}</p>
+                        <p style="color: red;">{{ headers }}</p>
                         <form action="" method='POST' enctype='multipart/form-data' onsubmit="return upload_form_validation()">
                             {% csrf_token %}
                             <!-- <span style="color: red;">Choose a Zybooks log file to upload</span> -->

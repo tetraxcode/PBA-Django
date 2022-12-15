@@ -101,8 +101,12 @@ def roster(dataframe, selected_labs):
 
     # Identify unique labs 
     unique_lab_ids = set()
-    for lab_id in df['content_resource_id']:
-        unique_lab_ids.add(lab_id)
+    if "content_resource_id" in df:
+        for lab_id in df['content_resource_id']:
+            unique_lab_ids.add(lab_id)
+    else:
+        for lab_id in df['lab_id']:
+            unique_lab_ids.add(lab_id)
 
     summary_roster = {} #final hashmap where we will be storing the whole roster
 
@@ -133,9 +137,14 @@ def roster(dataframe, selected_labs):
             num_of_submits = 0
             if user_id == -1:   # Checking if the entry is a solution
                 continue
-            for submission in user_df['submission']:
-                if submission == 1:
-                    num_of_submits += 1
+            if "submission" in user_df:
+                for submission in user_df['submission']:
+                    if submission == 1:
+                        num_of_submits += 1
+            else:
+                for submission in user_df['is_submission']:
+                    if submission == 1:
+                        num_of_submits += 1
             num_of_devs = num_of_runs - num_of_submits
             max_score = user_df['score'].max()
             if math.isnan(max_score):
@@ -147,8 +156,12 @@ def roster(dataframe, selected_labs):
             # else:
             #     zip_location = user_df['zip_location'].iloc[-1]
             time_list = [] # Contains timestamps for that user 
-            for time in user_df['date_submitted']:
-                time_list.append(time)
+            if "date_submitted" in user_df:
+                for time in user_df['date_submitted']:
+                    time_list.append(time)
+            else:
+                for time in user_df['date_submitted(US/Pacific)']:
+                    time_list.append(time)
             time_spent_by_user = time_to_minutes_seconds(time_list)
             total_pivots += 0
 
@@ -171,12 +184,6 @@ def roster(dataframe, selected_labs):
                     'Total Develops': num_of_devs,
                     'Total Submits': num_of_submits,
                     'Total Pivots': total_pivots,
-                    'Feat: Start date': 'x',
-                    'Feat: End date': 'x',
-                    'Feat: Work type': 'x',
-                    'Feat: # Submits': 'x',
-                    'Feat: Time spent': 'x',
-                    'Feat: Suspicious': 'x',
                     'Lab'+section+' Points per minute': ppm_normalized,
                     'Lab'+section+' Time spent': time_spent_by_user,
                     'Lab'+section+' # of runs': num_of_runs,

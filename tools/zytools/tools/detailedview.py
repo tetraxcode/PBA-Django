@@ -6,6 +6,10 @@ from difflib import Differ
 
 differ_inst = Differ()
 
+##############################
+#       Helper Functions     #
+##############################
+
 def get_label_data(input, option):
     if option == 'score_trail':
         y =  input.split(',')
@@ -35,8 +39,30 @@ def find_code_diff(code1, code2):
         code_diff += line + '\n'
     return code_diff
 
+##############################
+#       User Functions       #
+##############################
 
 def detailedview(id, logfile, data, options):
+    '''
+    Input:
+    ------
+        Accepts a student id, logfile, data and additional options as an input 
+    
+    Output:
+    -------
+        Returns a result structure containing the following 
+        result = {
+            'First_Name':   'John',
+            'Last_Name':    'Doe',
+            'Email':        'jdoe001@ucr.edu',
+            ...
+            ...
+            ...
+            ...
+            ...
+        }
+    '''
     result = {}
     labs = logfile.content_section.unique()
     details = data[int(id)]

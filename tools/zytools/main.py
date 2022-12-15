@@ -79,7 +79,7 @@ def download_code(logfile):
     '''
     Iterates through the zybooks logfile dataframe and appends a new column "student_code" to the dataframe and return it 
 
-    Note: This is the fastest way to download code submissions of all students at this time. We tried AsyncIO but it turned out to be slower than multiprocessing
+    Note: This is the fastest way to download code submissions of all students at this time. We tried AsyncIO but it turned out to be slower than multithreading
     '''
     urls = logfile.zip_location.to_list()
     student_code = []
@@ -90,7 +90,6 @@ def download_code(logfile):
         for url in urls:
             threads.append(executor.submit(download_code_helper, url))
         student_code = []
-        i = 0
         for task in as_completed(threads):
             student_code.append(task.result())
     df = pd.DataFrame(student_code, columns = ['zip_location', 'student_code'])
@@ -204,6 +203,8 @@ def create_data_structure(logfile):
 ##############################
 #           Control          #
 ##############################
+
+# Below definition is used when the tool is in offline mode
 if __name__ == '__main__':
     # Read File into a pandas dataframe
     # file_path = input('Enter path to the file including file name: ')
@@ -343,33 +344,87 @@ if __name__ == '__main__':
         if len(final_roster) != 0:
             write_output_to_csv(final_roster)
 
+#Below function is used when the tool needs to work with django (The above (if __name__ == '__main__") block will not be used)
 def main(id, selected_labs, selected_options, file_path, options):
+    '''
+    Input:
+    ------
+        id: Student ID 
+        selected_labs: Selected labs from the lab summary table 
+        selected_options: Used to pass selected tools (ex: Coding Trails, Coding style, etc)
+        file_path: Path where the uploaded logfile is saved (default: media/logfile.csv)
+        options: Used to pass any additional bits of information needed to pass from the frontend, optional
+
+    Returns:
+    --------
+        The returned structure (final_roster) changes according to the options selected 
+        final_roster: {
+            user_id_1: {
+                user_id:            121314141,
+                last_name:          'Doe,
+                first_name:         'John',
+                Email:              jdoe009@ucr.edu,
+                Role:               student,
+                points_per_minute:  0.0,
+                'Time Spent(total)':'16m 00s',
+                'Total Runs':       17,
+                'Total Score':      10.0,
+                'Total Develops':   8,
+                'Total Submits':    9,
+                'Total Pivots':     0,
+                'Lab 1.2 Points per minute': 0.0,
+                'Lab 1.2 Time spent': '16m 00s',
+                'Lab 1.2 # of runs': 17,
+                'Lab 1.2 % score': 10.0,
+                'Lab 1.2 # of devs': 8,
+                'Lab 1.2 # of subs': 9
+                tool1_output: 'something',
+                tool2_output: 'something,
+                ...
+                ...
+                ...
+            },
+            ...
+            ...
+            ...
+        }
+        
+        Depending on the selected options the tools outputs are added to this structure and returned to the frontend
+    '''
+
     logfile = pd.read_csv(file_path)
     logfile = logfile[logfile.role == 'Student']
     urls = logfile.zip_location.to_list()
     num_of_files_to_download = len(urls)
-    data = {}
-    final_roster = {}
-    input_list = selected_options
-    for inp in input_list:
 
+    data = {} # Dataframe that holds details about all students including their code
+    final_roster = {} # Final output to be returned
+    input_list = selected_options 
+
+    # Iterating through the selected tools from front end (ex: coding trails, coding style, etc)
+    for inp in input_list:
+        # 1. Quick Analysis (Lab Summary Table)
         if inp == 1:
             return [num_of_files_to_download, quick_analysis(logfile)]
         
+        # 2. Roster 
         elif inp == 2:
             final_roster = roster(logfile, selected_labs)
 
+        # 3. Style Anomalies 
         elif inp == 3:
+            # Checking if the datastructure has not been created yet
             if data == {}:
                 logfile = download_code(logfile)
                 data = create_data_structure(logfile)
+            
+            # Sending data, labs and modified anomaly scores to the anomaly tool 
             anomaly_detection_output = anomaly(data, selected_labs, options['Styleanomaly'])
             for user_id in anomaly_detection_output:
-                # print(anomaly_detection_output[user_id])
-                # break
                 for lab in anomaly_detection_output[user_id]:
                     anomalies_found = anomaly_detection_output[user_id][lab][0]
                     anomaly_score = anomaly_detection_output[user_id][lab][1]
+                    # IF the userid already exists in final_roster, appending additional columns 
                     if user_id in final_roster:
                         final_roster[user_id]['Lab ' + str(lab) + ' anomalies found'] = anomalies_found
                         final_roster[user_id]['Lab ' + str(lab) + ' anomaly score'] = anomaly_score
@@ -386,7 +441,9 @@ def main(id, selected_labs, selected_options, file_path, options):
                             str(lab) + ' Student code' : anomaly_detection_output[user_id][lab][2]
                         }
         
+        # 4. Coding Trails
         elif inp == 4:
+            # Checking if the datastructure has not been created yet
             if data == {}:
                 logfile = download_code(logfile)
                 data = create_data_structure(logfile)
@@ -400,6 +457,7 @@ def main(id, selected_labs, selected_options, file_path, options):
                     loc_trail = incdev_output[user_id][lab_id]['loc_trail']
                     time_trail = incdev_output[user_id][lab_id]['time_trail']
                     code = incdev_output[user_id][lab_id]['Highest_code']
+                    # IF the userid already exists in final_roster, appending additional columns 
                     if user_id in final_roster:
                         final_roster[user_id][lid + ' incdev_score'] = score
                         final_roster[user_id][lid + ' incdev_score_trail'] = score_trail
@@ -420,13 +478,17 @@ def main(id, selected_labs, selected_options, file_path, options):
                             str(lab_id) + ' Student code' : code
                         }
         
+        # 5. Coding Style 
         elif inp == 5:
+            # Checking if the datastructure has not been created yet
             if data == {}:
                 logfile = download_code(logfile)
                 data = create_data_structure(logfile)
+            # Sending data, selected labs to stylechecker tool 
             stylechecker_output = stylechecker(data, selected_labs)
             for user_id in stylechecker_output:
                 for lab_id in stylechecker_output[user_id]:
+                    # IF the userid already exists in final_roster, appending additional columns 
                     if user_id in final_roster:
                         final_roster[user_id][str(lab_id) + 'Style score'] = stylechecker_output[user_id][lab_id][0]
                         final_roster[user_id][str(lab_id) + 'Style output'] = stylechecker_output[user_id][lab_id][1]
@@ -443,17 +505,22 @@ def main(id, selected_labs, selected_options, file_path, options):
                             str(lab_id) + ' Student code' : stylechecker_output[user_id][lab_id][2]
                         }
         
+        # 6. Detailed view (Students view page)
         elif inp == 6:
+            # Checking if the datastructure has not been created yet
             if data == {}:
                 logfile = download_code(logfile)
                 data = create_data_structure(logfile)
+            # Sending student id, logfile, data and additional options to detailed view tool
             return detailedview(id, logfile, data, options)
 
+        # 7. Similarities 
         elif inp == 7:
+            # Checking if the datastructure has not been created yet
             if data == {}:
                 logfile = download_code(logfile)
                 data = create_data_structure(logfile)
-            
+            #Sending student id, selected labs and data to the the similarity tool
             similarity = similarity_of_highest_scoring_code_submissions(id, selected_labs, data)
             for user_id in similarity:
                 for lab_id in similarity[user_id]:
@@ -469,13 +536,15 @@ def main(id, selected_labs, selected_options, file_path, options):
                             str(lab_id) + " Similarity": similarity[user_id][lab_id]['similarity_max']
                         }
 
+        # 8. Exit
         elif inp == 8:
             exit(0)
         
+        # 9. Out of bounds 
         else:
             print("Please select a valid option")
         
-        #Adding N/A to empty columns
+        #Adding N/A to empty columns (Empty columns do exist because not every student might have submitted all the labs)
         #Fiding all columns
         columns = []
         for id in final_roster:

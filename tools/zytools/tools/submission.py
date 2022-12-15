@@ -1,5 +1,5 @@
 """"
-Data structure to represent student code submissions
+Submission object to represent student code submissions containing all sorts of data
 """
 
 class Submission:

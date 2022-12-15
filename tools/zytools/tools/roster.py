@@ -44,8 +44,10 @@ def write_output_to_csv(final_roster):
     except IOError:
         print('IO Error')
 
-#Utility functions
 def get_valid_date_time(t):
+    '''
+    There are lots of different datetime formats, this function accounts for those and returns the timestamp
+    '''
     for fmt in ('%m/%d/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%m/%d/%y %H:%M'):
         try:
             return datetime.strptime(t, fmt)
@@ -53,12 +55,10 @@ def get_valid_date_time(t):
             pass
     raise ValueError('Cannot recognize datetime format: ' + t)
 
-def time_to_minutes_seconds(time_list): # Converts time to minutes and seconds (ex: 1m 30s) ignores anything over the 10 minute interval
+def time_to_minutes_seconds(time_list): 
+    # Converts time to minutes and seconds (ex: 1m 30s) ignores anything over the 10 minute interval
     time_spent_by_user = 0
-    fmt = '%Y-%m-%d %H:%M:%S'
     for i in range(len(time_list)-1):
-        # d1 = datetime.strptime(str(time_list[i]), fmt)
-        # d2 = datetime.strptime(str(time_list[i+1]), fmt)
         d1 = get_valid_date_time(str(time_list[i]))
         d2 = get_valid_date_time(str(time_list[i+1]))
         diff = d2 -d1
@@ -71,7 +71,8 @@ def time_to_minutes_seconds(time_list): # Converts time to minutes and seconds (
     time_spent = td_split[1] +'m '+ td_split[2].split('.')[0] + 's'
     return time_spent
 
-def add_total_time(total_time, lab_time): # Adds time to calculate total time spent by the user
+def add_total_time(total_time, lab_time): 
+    # Adds time to calculate total time spent by the user
     total_time_minutes = int(total_time.split(' ')[0].strip('m'))
     total_time_seconds = int(total_time.split(' ')[1].strip('s'))
     total_time = total_time_minutes * 60 + total_time_seconds
@@ -84,8 +85,16 @@ def add_total_time(total_time, lab_time): # Adds time to calculate total time sp
     total_time = td_split[1] +'m '+ td_split[2].split('.')[0] + 's'
     return total_time
 
-#Calculating the points per minute metric
 def get_ppm(time_spent, score):
+    '''
+    Checks if a student scored too many points too quickly, Indicates suspicious acitivity (might have copied the solution)
+    Input:
+    ------
+        Accepts time spent on that lab and the maximum number of points scored by the student as an input
+    Output:
+    -------
+        Returns a float points per minute 
+    '''
     time = time_spent.split()
     minutes = int(time[0].strip('m'))
     seconds = int(time[1].strip('s'))
@@ -95,8 +104,51 @@ def get_ppm(time_spent, score):
     else:
         return round((score / (total_seconds)), 2)
 
+##############################
+#       User Functions       #
+##############################
 
 def roster(dataframe, selected_labs):
+    '''
+    Input:
+    ------
+        Accepts a logfile dataframe and selected labs as an input 
+    
+    Output:
+    -------
+        Calculates the total time spent across selected labs, total time spent, total develops, total submits, and also details about 
+        time spent on each lab, number of submits in each lab, etc
+
+        summary_roster = {
+            user_id_1: {
+                user_id:            121314141,
+                last_name:          'Doe,
+                first_name:         'John',
+                Email:              jdoe009@ucr.edu,
+                Role:               student,
+                points_per_minute:  0.0,
+                'Time Spent(total)':'16m 00s',
+                'Total Runs':       17,
+                'Total Score':      10.0,
+                'Total Develops':   8,
+                'Total Submits':    9,
+                'Total Pivots':     0,
+                'Lab 1.2 Points per minute': 0.0,
+                'Lab 1.2 Time spent': '16m 00s',
+                'Lab 1.2 # of runs': 17,
+                'Lab 1.2 % score': 10.0,
+                'Lab 1.2 # of devs': 8,
+                'Lab 1.2 # of subs': 9
+                ...
+                ...
+                ...
+            },
+            ...
+            ...
+            ...
+        }
+    '''
+
     df = dataframe
 
     # Identify unique labs 
@@ -109,14 +161,6 @@ def roster(dataframe, selected_labs):
             unique_lab_ids.add(lab_id)
 
     summary_roster = {} #final hashmap where we will be storing the whole roster
-
-    # Assuming everything is 0 at the beginning
-    total_time_spent = 0
-    total_runs = 0
-    total_score = 0
-    total_develops = 0
-    total_submits = 0
-    total_pivots = 0
 
     for selected_lab in selected_labs: # Iterating through the lab selected
         lab_df = df[df['content_section'] == selected_lab].reset_index() # Dataframe for that particular lab
@@ -149,12 +193,6 @@ def roster(dataframe, selected_labs):
             max_score = user_df['score'].max()
             if math.isnan(max_score):
                 max_score = 0
-            # max_score_idx = user_df['score'].idxmax(skipna=True)
-            # if not pd.isna(max_score_idx):  # Checking if the submission has a score 
-            #     zip_location = user_df['zip_location'][max_score_idx]
-            #     max_score = user_df['score'].max()
-            # else:
-            #     zip_location = user_df['zip_location'].iloc[-1]
             time_list = [] # Contains timestamps for that user 
             if "date_submitted" in user_df:
                 for time in user_df['date_submitted']:
@@ -163,8 +201,8 @@ def roster(dataframe, selected_labs):
                 for time in user_df['date_submitted(US/Pacific)']:
                     time_list.append(time)
             time_spent_by_user = time_to_minutes_seconds(time_list)
-            total_pivots += 0
 
+            # Points per minute, Indicates if a student scores too many points too quickly, Might have copied the solution?
             ppm = get_ppm(time_spent_by_user, max_score)
 
             #Normalization zi = (xi - min(x)) / (max(x) – min(x))  | We assumed max(x) = 10 and min(x) = 0
@@ -183,8 +221,7 @@ def roster(dataframe, selected_labs):
                     'Total Score': max_score,
                     'Total Develops': num_of_devs,
                     'Total Submits': num_of_submits,
-                    'Total Pivots': total_pivots,
-                    'Lab'+section+' Points per minute': ppm_normalized,
+                    'Lab'+section+' Points per minute': round(ppm_normalized, 2),
                     'Lab'+section+' Time spent': time_spent_by_user,
                     'Lab'+section+' # of runs': num_of_runs,
                     'Lab'+section+' % score': max_score,

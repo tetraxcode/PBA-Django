@@ -10,7 +10,21 @@ import difflib
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
+##############################
+#       Helper Functions     #
+##############################
+
 def getMoss(code1, code2):
+    '''
+    Uses a modified version of the Copydetect package which has Moss similarity detection capabilities
+    Input:
+    ------
+        Accepts two different code runs 
+    
+    Output:
+    -------
+        Returns similarity and html highlighting differences 
+    '''
     fp1 = copydetect.CodeFingerprint( (code1), 25, 1)
     fp2 = copydetect.CodeFingerprint( (code2), 25, 1)
     token_overlap, similarities, slices = copydetect.compare_files(fp1, fp2)
@@ -74,32 +88,43 @@ def removeComments(code):
     return strip_query
 #**************************************************************
 
-#main
-def similarity_of_highest_scoring_code_submissions(student_id, selected_labs, data):
+##############################
+#       User Functions       #
+##############################
 
-    result = {}
+def similarity_of_highest_scoring_code_submissions(selected_labs, data):
     '''
-    result = {
-        student_id: {
-            lab1 : {
-                similarity: [
-                    [submission1, submission2, similarity_score],
-                    [submission1, submission2, similarity_score]
-                    ...
-                    ...
-                    ...
-                ],
-                similarity_max = 0
+    Compares each students latest highest scoring submission with every students latest highest scoring submission
+    Input:
+    ------
+        Accepts selected labs and data as an input 
+    
+    Output:
+    -------
+        Returns a structure containing similarity scores
+        result = {
+            student_id: {
+                lab1 : {
+                    similarity: [
+                        [submission1, submission2, similarity_score],
+                        [submission1, submission2, similarity_score]
+                        ...
+                        ...
+                        ...
+                    ],
+                    similarity_max = 0
+                },
+                ...
+                ...
+                ...
             },
             ...
             ...
             ...
-        },
-        ...
-        ...
-        ...
-    }
+        }
     '''
+
+    result = {}
 
     for lab in selected_labs:
         for user_id_1 in data:
@@ -136,30 +161,39 @@ def similarity_of_highest_scoring_code_submissions(student_id, selected_labs, da
     return result
 
 def similarity_of_one_student(student_id, selected_labs, data):
-
-    result = {}
     '''
-    result = {
-        student_id: {
-            lab1 : {
-                similarity: [
-                    [submission1, submission2, similarity_score],
-                    [submission1, submission2, similarity_score]
-                    ...
-                    ...
-                    ...
-                ],
-                similarity_max = 0
+    Compares one students latest highest scoring submission with every other students latest highest scoring submission
+    Input:
+    ------
+        Accepts a student id, selected labs and data as an input 
+    
+    Output:
+    -------
+        Returns a structure containing similarity scores
+        result = {
+            student_id: {
+                lab1 : {
+                    similarity: [
+                        [submission1, submission2, similarity_score],
+                        [submission1, submission2, similarity_score]
+                        ...
+                        ...
+                        ...
+                    ],
+                    similarity_max = 0
+                },
+                ...
+                ...
+                ...
             },
             ...
             ...
             ...
-        },
-        ...
-        ...
-        ...
-    }
+        }
     '''
+
+    result = {}
+
     user_id_1 = int(student_id)
 
     for lab in selected_labs:

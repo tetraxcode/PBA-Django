@@ -3,6 +3,9 @@ from datetime import datetime,timedelta
 import csv
 
 def get_valid_datetime(timestamp):
+    '''
+    There are lots of different datetime formats, this function accounts for those and returns the timestamp
+    '''
     t = timestamp
     for fmt in ('%m/%d/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%m/%d/%Y %H:%M:%S','%m/%d/%y %H:%M','%m/%d/%Y %H:%M'):
         try:
@@ -28,6 +31,26 @@ def write(summary):
         print('IO Error')
 
 def quick_analysis(dataframe):
+    '''
+    Input:
+    ------
+        Accepts the logfile dataframe as an input 
+    
+    Output:
+    -------
+        Returns a structure containing all the averages 
+
+        summary = {
+            'section': 1.2,
+            'name': 'LAB: Input: Mad Lib',
+            'number_of_students': 289,
+            'time_spent': '05m 26s',
+            'num_of_runs': 7,
+            'score': 100,
+            'develops': 5,
+            'num_of_submits': 2,
+        }
+    '''
     df = dataframe
     summary = {}
     unique_lab_ids = set()
@@ -99,7 +122,6 @@ def quick_analysis(dataframe):
         avg_score = int(round(total_score/num_of_students)/10*100)
         avg_num_of_submits = round(num_of_submits/len(unique_user_id))
         num_of_develops = num_of_runs - avg_num_of_submits
-        # print(name, num_of_students, num_of_runs, avg_score, avg_num_of_submits)
         summary[lab_id] = {
                 'section': section,
                 'name': name,
@@ -109,8 +131,6 @@ def quick_analysis(dataframe):
                 'score': avg_score,
                 'develops': num_of_develops,
                 'num_of_submits': avg_num_of_submits,
-                'pivots': 'x',
         }
     return summary
-    # write(summary)
     

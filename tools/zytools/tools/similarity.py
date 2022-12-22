@@ -128,6 +128,8 @@ def similarity_of_highest_scoring_code_submissions(selected_labs, data):
 
     for lab in selected_labs:
         for user_id_1 in data:
+            if lab not in data[user_id_1]:
+                continue
             if user_id_1 not in result:
                 result[user_id_1] = {}
             if lab not in result:
@@ -141,6 +143,8 @@ def similarity_of_highest_scoring_code_submissions(selected_labs, data):
                 if submission1.max_score >= max_score:
                     student_code_1 = submission1.code
             for user_id_2 in data:
+                if lab not in data[user_id_2]:
+                    continue
                 student_code_2 = ""
                 submission2 = None
                 if user_id_1 != user_id_2:
@@ -157,7 +161,8 @@ def similarity_of_highest_scoring_code_submissions(selected_labs, data):
                 simMax = max(sim, simNC)
                 similarity_max = max(similarity_max, simMax)
                 result[user_id_1][lab]["similarity"].append([submission1, submission2, simMax])
-        result[user_id_1][lab]["similarity_max"] = similarity_max
+        if user_id_1 in result:
+            result[user_id_1][lab]["similarity_max"] = similarity_max
     return result
 
 def similarity_of_one_student(student_id, selected_labs, data):

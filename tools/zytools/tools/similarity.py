@@ -125,6 +125,7 @@ def similarity_of_highest_scoring_code_submissions(selected_labs, data):
     '''
 
     result = {}
+    print(data)
 
     for lab in selected_labs:
         for user_id_1 in data:

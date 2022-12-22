@@ -21,7 +21,7 @@ class Not200Exception(Exception):
 
 def get_valid_datetime(timestamp):
     t = timestamp
-    for fmt in ('%m/%d/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%m/%d/%Y %H:%M:%S','%m/%d/%y %H:%M'):
+    for fmt in ('%m/%d/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%m/%d/%Y %H:%M:%S','%m/%d/%y %H:%M', '%m/%d/%Y %H:%M'):
         try:
             return datetime.strptime(t, fmt)
         except ValueError:

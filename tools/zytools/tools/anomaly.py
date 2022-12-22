@@ -24,7 +24,7 @@ def get_valid_datetime(timestamp):
     There are lots of different datetime formats, this function accounts for those and returns the timestamp
     '''
     t = timestamp
-    for fmt in ('%m/%d/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%m/%d/%Y %H:%M:%S','%m/%d/%y %H:%M'):
+    for fmt in ('%m/%d/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%m/%d/%Y %H:%M:%S','%m/%d/%y %H:%M', '%m/%d/%Y %H:%M'):
         try:
             return datetime.strptime(t, fmt)
         except ValueError:
@@ -345,6 +345,7 @@ def anomaly(data, selected_labs, Styleanomaly): # Function to calculate the anom
                 output[user_id] = {}
             if lab in data[user_id]:
                 max_score = 0
+                code = ""
                 for sub in data[user_id][lab]:
                     if sub.max_score > max_score:
                         max_score = sub.max_score

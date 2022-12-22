@@ -31,7 +31,7 @@ def get_valid_datetime(timestamp):
     There are lots of different datetime formats, this function accounts for those and returns the timestamp
     '''
     t = timestamp
-    for fmt in ('%m/%d/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%m/%d/%Y %H:%M:%S','%m/%d/%y %H:%M', '%m/%d/%Y %H:%M'):
+    for fmt in ('%m/%d/%Y %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%m/%d/%Y %H:%M:%S','%m/%d/%y %H:%M','%m/%d/%Y %H:%M'):
         try:
             return datetime.strptime(t, fmt)
         except ValueError:
@@ -521,7 +521,7 @@ def main(id, selected_labs, selected_options, file_path, options):
                 logfile = download_code(logfile)
                 data = create_data_structure(logfile)
             #Sending student id, selected labs and data to the the similarity tool
-            similarity = similarity_of_highest_scoring_code_submissions(id, selected_labs, data)
+            similarity = similarity_of_highest_scoring_code_submissions(selected_labs, data)
             for user_id in similarity:
                 for lab_id in similarity[user_id]:
                     if user_id in final_roster:
